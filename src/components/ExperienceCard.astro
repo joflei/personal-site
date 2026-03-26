@@ -1,0 +1,31 @@
+---
+interface Props {
+  company: string;
+  title: string;
+  dates: string;
+  bullets: string[];
+  theme?: string;
+}
+
+const { company, title, dates, bullets, theme } = Astro.props;
+---
+
+<div class="card group">
+  {theme && (
+    <span class="tag mb-4">{theme}</span>
+  )}
+  <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+    <div>
+      <h3 class="text-lg sm:text-xl font-serif font-semibold text-espresso">{title}</h3>
+      <p class="text-terracotta font-medium">{company}</p>
+    </div>
+    <span class="text-sm text-warm-gray whitespace-nowrap">{dates}</span>
+  </div>
+  <ul class="space-y-3">
+    {bullets.map((bullet) => (
+      <li class="text-espresso/80 text-sm sm:text-base leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:rounded-full before:bg-terracotta/40">
+        {bullet}
+      </li>
+    ))}
+  </ul>
+</div>

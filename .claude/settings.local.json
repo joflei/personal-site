@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/)",
+      "Bash(curl -s http://localhost:4321/)",
+      "Bash(curl -s http://localhost:4321/about)",
+      "Bash(curl -s http://localhost:4321/experience)",
+      "Bash(curl -s http://localhost:4321/contact)",
+      "Bash(kill 42937)",
+      "Bash(xargs kill:*)",
+      "Bash(mkdir -p /usr/local/bin)",
+      "Bash(ln -sf /opt/homebrew/bin/node /usr/local/bin/node)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/images/headshot.JPG)",
+      "Bash(gh auth:*)",
+      "Bash(/opt/homebrew/bin/brew install:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"Initial commit: Geoffrey Rugarabamu personal website:*)"
+    ]
+  }
+}

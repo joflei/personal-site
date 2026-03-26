@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About — Geoffrey Rugarabamu">
+  <section class="page-section">
+    <div class="section-container max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-8">About me</h1>
+
+      <div class="space-y-6 text-espresso/80 text-base sm:text-lg leading-relaxed">
+        <p>
+          I've spent the past decade at the intersection of data, people, and decisions. My work
+          has always been driven by a simple belief: <strong class="text-espresso">data is only as valuable as the trust
+          people place in it</strong>. That belief has shaped everything I do — from the governance
+          frameworks I build to the dashboards I design to the way I partner with stakeholders.
+        </p>
+
+        <p>
+          Today, I lead data governance and analytics at <strong class="text-espresso">Meta</strong>, where I work within
+          People Analytics to ensure the metrics, systems, and processes that inform workforce
+          decisions are accurate, consistent, and actionable. Before Meta, I spent years at
+          <strong class="text-espresso">The New School</strong> and <strong class="text-espresso">Berkeley College</strong>, where I led institutional research
+          and analytics — building the reporting infrastructure that supported everything from
+          enrollment strategy to accreditation.
+        </p>
+
+        <p>
+          My path into data wasn't a straight line. I studied economics, got fascinated by how
+          numbers shape policy and organizational strategy, and found myself drawn to the
+          unglamorous-but-essential work of making sure those numbers were actually right. That
+          led me into institutional research, then analytics, and eventually into data governance —
+          the discipline of making data trustworthy at scale.
+        </p>
+      </div>
+
+      <!-- Philosophy -->
+      <div class="mt-16">
+        <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-espresso mb-6">
+          How I think about data
+        </h2>
+        <div class="bg-white/60 rounded-xl p-6 sm:p-8 border border-sand-dark/50 space-y-4 text-espresso/80 leading-relaxed">
+          <p>
+            I think of data governance not as a compliance exercise but as a <em>trust-building
+            practice</em>. When someone pulls up a dashboard, they're making a decision — and
+            they need to know the number they're looking at means what they think it means,
+            it was calculated the way they expect, and it's as current as it claims to be.
+          </p>
+          <p>
+            My approach starts with metric alignment: getting stakeholders to agree on definitions
+            before building anything. Then it's about infrastructure — anomaly detection, data
+            quality monitoring, clear lineage — so that problems surface early, not in a
+            boardroom. And finally, it's about partnership: sitting with the people who consume
+            data, understanding their questions, and designing systems that actually serve them.
+          </p>
+          <p>
+            The best data work, in my experience, is invisible. When governance is working well,
+            nobody talks about it — they just trust the numbers and move on to making better decisions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="mt-16">
+        <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-espresso mb-6">Education</h2>
+        <div class="space-y-4">
+          <div class="card">
+            <h3 class="font-serif font-semibold text-espresso">MS, Economic Analysis</h3>
+            <p class="text-terracotta font-medium">CUNY Brooklyn College</p>
+          </div>
+          <div class="card">
+            <h3 class="font-serif font-semibold text-espresso">BA, Economics (Honors)</h3>
+            <p class="text-terracotta font-medium">Manhattanville College</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools & Technologies -->
+      <div class="mt-16">
+        <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-espresso mb-6">Tools I work with</h2>
+        <div class="flex flex-wrap gap-2">
+          {[
+            'SQL (Presto, SQL Server, Oracle)',
+            'R',
+            'Tableau',
+            'Excel / Sheets',
+            'Salesforce',
+            'Workday',
+            'Visier',
+            'Python',
+            'Data Governance Frameworks',
+          ].map((tool) => (
+            <span class="tag">{tool}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

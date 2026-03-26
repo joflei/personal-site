@@ -1,0 +1,85 @@
+---
+import { navigationItems, siteConfig } from '../config/navigation';
+
+const enabledItems = navigationItems.filter((item) => item.enabled);
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 bg-sand/90 backdrop-blur-md border-b border-sand-dark/40">
+  <nav class="section-container flex items-center justify-between h-16 sm:h-20">
+    <a href="/" class="font-serif text-xl sm:text-2xl font-semibold text-espresso hover:text-terracotta no-underline transition-colors">
+      {siteConfig.name}
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
+      {enabledItems.filter(item => item.href !== '/').map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm font-medium tracking-wide uppercase no-underline transition-colors',
+              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                ? 'text-terracotta'
+                : 'text-espresso/70 hover:text-terracotta',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile hamburger button -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 group"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+    >
+      <span class="block w-6 h-0.5 bg-espresso transition-all duration-300 origin-center group-aria-expanded:translate-y-2 group-aria-expanded:rotate-45"></span>
+      <span class="block w-6 h-0.5 bg-espresso transition-all duration-300 group-aria-expanded:opacity-0"></span>
+      <span class="block w-6 h-0.5 bg-espresso transition-all duration-300 origin-center group-aria-expanded:-translate-y-2 group-aria-expanded:-rotate-45"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden hidden border-t border-sand-dark/40 bg-sand/95 backdrop-blur-md">
+    <ul class="section-container py-6 flex flex-col gap-4">
+      {enabledItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block text-base font-medium py-2 no-underline transition-colors',
+              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                ? 'text-terracotta'
+                : 'text-espresso/70 hover:text-terracotta',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  btn?.addEventListener('click', () => {
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    menu?.classList.toggle('hidden');
+  });
+
+  // Close menu on link click
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      btn?.setAttribute('aria-expanded', 'false');
+      menu?.classList.add('hidden');
+    });
+  });
+</script>

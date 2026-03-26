@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+
+const experiences = [
+  {
+    company: 'Meta',
+    title: 'Data Governance & Analytics Lead, People Analytics',
+    dates: '2022 – Present',
+    theme: 'Making Data Trustworthy',
+    bullets: [
+      'Spearheading data governance for People Analytics, establishing metric definitions and data quality standards that thousands of internal stakeholders rely on for workforce decisions.',
+      'Designed an anomaly detection system across 20+ critical metrics that catches data quality issues before they reach leadership — saving domain experts 20+ hours per month of reactive firefighting.',
+      'Built a data quality investment sizing framework that quantifies the business cost of bad data, giving leadership the evidence they need to prioritize governance investments.',
+    ],
+  },
+  {
+    company: 'Meta',
+    title: 'Data Analyst, People Analytics',
+    dates: '2021 – 2022',
+    theme: 'Building Infrastructure That Scales',
+    bullets: [
+      'Developed and maintained the core dashboard infrastructure for People Analytics, creating reporting systems used by HR business partners across the organization.',
+      'Led the AI-readiness assessment for the analytics org, mapping current data maturity against the requirements of emerging machine learning and AI initiatives.',
+    ],
+  },
+  {
+    company: 'The New School',
+    title: 'Senior Research Analyst',
+    dates: '2017 – 2021',
+    theme: 'Bridging Teams',
+    bullets: [
+      'Served as the primary analytics partner for enrollment strategy, retention initiatives, and accreditation — translating complex data into clear narratives for non-technical leadership.',
+      'Built the university\'s first centralized reporting infrastructure, replacing siloed spreadsheets with consistent, governed dashboards that reduced reporting errors by an estimated 40%.',
+      'Partnered with academic deans, enrollment leadership, and IT to align on shared metric definitions — resolving years of conflicting numbers across departments.',
+    ],
+  },
+  {
+    company: 'The New School',
+    title: 'Research Analyst',
+    dates: '2015 – 2017',
+    theme: 'Bridging Teams',
+    bullets: [
+      'Designed and automated institutional survey processes, improving response rates and turning qualitative feedback into actionable reporting for academic program reviews.',
+      'Delivered data analysis and reporting for federal and state compliance, ensuring the university met regulatory requirements accurately and on time.',
+    ],
+  },
+  {
+    company: 'Berkeley College',
+    title: 'Research Analyst',
+    dates: '2014 – 2015',
+    theme: 'Building Infrastructure That Scales',
+    bullets: [
+      'Built enrollment and retention dashboards that gave leadership real-time visibility into student outcomes, replacing quarterly batch reports with live, trusted data.',
+      'Conducted predictive modeling for student attrition risk, enabling early intervention programs that targeted support where it was most needed.',
+    ],
+  },
+];
+---
+
+<BaseLayout title="Experience — Geoffrey Rugarabamu">
+  <section class="page-section">
+    <div class="section-container max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-4">Experience</h1>
+      <p class="text-espresso/70 text-base sm:text-lg mb-12 max-w-2xl leading-relaxed">
+        A decade of building data systems people can trust — from institutional research
+        to enterprise-scale governance at Meta.
+      </p>
+
+      <div class="space-y-6">
+        {experiences.map((exp) => (
+          <ExperienceCard
+            company={exp.company}
+            title={exp.title}
+            dates={exp.dates}
+            bullets={exp.bullets}
+            theme={exp.theme}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

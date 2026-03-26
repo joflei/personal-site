@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light only;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-sand text-espresso font-sans leading-relaxed;
+    position: relative;
+  }
+
+  /* Subtle paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  a {
+    @apply text-terracotta transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-terracotta-light;
+  }
+
+  ::selection {
+    background-color: #B8652A33;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-4xl mx-auto px-6 sm:px-8;
+  }
+
+  .page-section {
+    @apply py-16 sm:py-24;
+  }
+
+  .card {
+    @apply bg-white/60 rounded-xl p-6 sm:p-8 shadow-sm border border-sand-dark/50
+           transition-all duration-300 ease-out;
+  }
+
+  .card:hover {
+    @apply shadow-md -translate-y-0.5;
+  }
+
+  .tag {
+    @apply inline-block text-xs font-medium px-3 py-1 rounded-full
+           bg-sage/10 text-sage border border-sage/20;
+  }
+}

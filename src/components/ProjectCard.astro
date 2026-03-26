@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  tags?: string[];
+  link?: string;
+}
+
+const { title, description, tags = [], link } = Astro.props;
+---
+
+<div class="card group">
+  <h3 class="text-lg font-serif font-semibold text-espresso mb-2 group-hover:text-terracotta transition-colors">
+    {link ? (
+      <a href={link} class="no-underline text-inherit hover:text-terracotta">{title}</a>
+    ) : (
+      title
+    )}
+  </h3>
+  <p class="text-espresso/70 text-sm sm:text-base leading-relaxed mb-4">{description}</p>
+  {tags.length > 0 && (
+    <div class="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
+    </div>
+  )}
+</div>

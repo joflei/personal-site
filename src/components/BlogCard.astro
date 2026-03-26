@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  excerpt: string;
+  date: string;
+  slug?: string;
+}
+
+const { title, excerpt, date, slug } = Astro.props;
+---
+
+<article class="card group">
+  <time class="text-xs text-warm-gray uppercase tracking-wider">{date}</time>
+  <h3 class="text-lg font-serif font-semibold text-espresso mt-2 mb-2 group-hover:text-terracotta transition-colors">
+    {slug ? (
+      <a href={slug} class="no-underline text-inherit hover:text-terracotta">{title}</a>
+    ) : (
+      title
+    )}
+  </h3>
+  <p class="text-espresso/70 text-sm sm:text-base leading-relaxed">{excerpt}</p>
+</article>

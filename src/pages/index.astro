@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/navigation';
+---
+
+<BaseLayout>
+  <!-- Hero -->
+  <section class="page-section">
+    <div class="section-container">
+      <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+        <!-- Headshot -->
+        <div class="flex-shrink-0">
+          <img
+            src="/images/headshot.JPG"
+            alt={`Portrait of ${siteConfig.name}`}
+            class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-cover shadow-lg shadow-espresso/10 border-4 border-white/60"
+            width="224"
+            height="224"
+          />
+        </div>
+
+        <!-- Hero text -->
+        <div class="text-center md:text-left">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-espresso leading-tight">
+            Geoffrey<br class="hidden sm:block" /> Rugarabamu
+          </h1>
+          <p class="mt-4 text-lg sm:text-xl text-terracotta font-medium max-w-xl">
+            I make organizational data trustworthy, useful, and understood.
+          </p>
+          <p class="mt-6 text-base sm:text-lg text-espresso/75 max-w-xl leading-relaxed">
+            Data governance strategist and analytics leader with 10+ years helping organizations
+            build the systems, standards, and culture that turn raw data into confident decisions.
+            Currently at Meta, leading data governance for People Analytics.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
+            <a
+              href="/about"
+              class="inline-block bg-terracotta text-sand px-6 py-3 rounded-lg font-medium text-sm
+                     hover:bg-terracotta-light transition-colors no-underline"
+            >
+              Learn more about me
+            </a>
+            <a
+              href="/contact"
+              class="inline-block border-2 border-espresso/20 text-espresso px-6 py-3 rounded-lg font-medium text-sm
+                     hover:border-terracotta hover:text-terracotta transition-colors no-underline"
+            >
+              Get in touch
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I do (brief) -->
+  <section class="py-16 sm:py-20 bg-walnut text-sand">
+    <div class="section-container">
+      <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-sand mb-10 text-center">
+        What I bring to the table
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white/5 rounded-xl p-6 border border-sand/10">
+          <h3 class="font-serif text-lg font-semibold text-terracotta-light mb-2">Data Governance</h3>
+          <p class="text-sand/70 text-sm leading-relaxed">
+            Building the frameworks, standards, and partnerships that make organizational data reliable
+            enough to act on with confidence.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-sand/10">
+          <h3 class="font-serif text-lg font-semibold text-terracotta-light mb-2">Analytics Infrastructure</h3>
+          <p class="text-sand/70 text-sm leading-relaxed">
+            Designing dashboards, metric definitions, and detection systems that surface
+            the right insights at the right time.
+          </p>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-sand/10 sm:col-span-2 lg:col-span-1">
+          <h3 class="font-serif text-lg font-semibold text-terracotta-light mb-2">Cross-Functional Partnership</h3>
+          <p class="text-sand/70 text-sm leading-relaxed">
+            Translating between data teams and decision-makers so that analytics investments
+            solve real business problems.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

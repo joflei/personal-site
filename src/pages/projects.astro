@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const projects = [
+  {
+    title: 'Anomaly Detection Framework',
+    description: 'An automated system for detecting data quality anomalies across critical People Analytics metrics, reducing time-to-detection from days to minutes.',
+    tags: ['SQL', 'Data Quality', 'Alerting'],
+  },
+  {
+    title: 'Data Quality Investment Sizing',
+    description: 'A framework for quantifying the business cost of data quality issues, giving leadership clear evidence for prioritizing governance investments.',
+    tags: ['Data Governance', 'Strategy', 'ROI'],
+  },
+];
+---
+
+<BaseLayout title="Projects — Geoffrey Rugarabamu">
+  <section class="page-section">
+    <div class="section-container max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-4">Projects</h1>
+      <p class="text-espresso/70 text-base sm:text-lg mb-12 leading-relaxed">
+        Selected work and case studies from across my career in data governance and analytics.
+      </p>
+
+      <div class="grid gap-6">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.title}
+            description={project.description}
+            tags={project.tags}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

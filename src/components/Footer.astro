@@ -1,0 +1,26 @@
+---
+import { siteConfig } from '../config/navigation';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-sand-dark/40 bg-walnut text-sand/80">
+  <div class="section-container py-12 sm:py-16">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+      <div>
+        <p class="font-serif text-lg text-sand font-medium">{siteConfig.name}</p>
+        <p class="text-sm mt-1 text-sand/60">Data Governance & Analytics Leader</p>
+      </div>
+      <div class="flex items-center gap-6 text-sm">
+        <a href={`mailto:${siteConfig.email}`} class="text-sand/60 hover:text-terracotta-light transition-colors">
+          Email
+        </a>
+        <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" class="text-sand/60 hover:text-terracotta-light transition-colors">
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="mt-8 pt-6 border-t border-sand/10 text-xs text-sand/40">
+      &copy; {year} {siteConfig.name}. All rights reserved.
+    </div>
+  </div>
+</footer>
