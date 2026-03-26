@@ -34,7 +34,7 @@ export const siteConfig = {
   name: 'Geoffrey Rugarabamu',
   title: 'Geoffrey Rugarabamu — Data Governance & Analytics',
   description: 'I help organizations trust their data and make better decisions with it. Data governance strategist, analytics leader, and cross-functional partner.',
-  url: 'https://rugarabamu.ai',
+  url: 'https://joflei.github.io/personal-site',
   email: 'geoffrey.rugarabamu@gmail.com',
   phone: '(914) 258-5835',
   linkedin: 'https://www.linkedin.com/in/geoffrey-rugarabamu',

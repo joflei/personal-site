@@ -11,7 +11,7 @@ import { siteConfig } from '../config/navigation';
         <!-- Headshot -->
         <div class="flex-shrink-0">
           <img
-            src="/images/headshot.JPG"
+            src={`${import.meta.env.BASE_URL}/images/headshot.JPG`}
             alt={`Portrait of ${siteConfig.name}`}
             class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-cover shadow-lg shadow-espresso/10 border-4 border-white/60"
             width="224"
@@ -34,14 +34,14 @@ import { siteConfig } from '../config/navigation';
           </p>
           <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
             <a
-              href="/about"
+              href={`${import.meta.env.BASE_URL}/about`}
               class="inline-block bg-terracotta text-sand px-6 py-3 rounded-lg font-medium text-sm
                      hover:bg-terracotta-light transition-colors no-underline"
             >
               Learn more about me
             </a>
             <a
-              href="/contact"
+              href={`${import.meta.env.BASE_URL}/contact`}
               class="inline-block border-2 border-espresso/20 text-espresso px-6 py-3 rounded-lg font-medium text-sm
                      hover:border-terracotta hover:text-terracotta transition-colors no-underline"
             >
