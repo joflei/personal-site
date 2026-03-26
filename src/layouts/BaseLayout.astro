@@ -23,6 +23,8 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light only" />
+    <!-- NOINDEX: Remove the line below when you're ready for Google to find your site -->
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="description" content={description} />
 
     <!-- Open Graph -->
