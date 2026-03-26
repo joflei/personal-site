@@ -3,7 +3,7 @@
 // ============================================================
 // Toggle pages on/off by changing `enabled` to true or false.
 // Only pages with `enabled: true` will appear in the site navigation.
-// The page itself will still be accessible by URL even if disabled —
+// The page itself will still be accessible by URL even if disabled.
 // this only controls whether it shows in the nav menu.
 //
 // Example: To enable the Writing page, change its `enabled` to `true`:
@@ -23,7 +23,7 @@ export const navigationItems: NavItem[] = [
   { label: 'Contact',    href: '/contact',    enabled: true  },
 
   // ----------------------------------------------------------
-  // HIDDEN PAGES — built and routed, but not shown in nav yet.
+  // HIDDEN PAGES: built and routed, but not shown in nav yet.
   // Change `enabled` to `true` when you're ready to launch them.
   // ----------------------------------------------------------
   { label: 'Writing',    href: '/writing',    enabled: false },
@@ -32,7 +32,7 @@ export const navigationItems: NavItem[] = [
 
 export const siteConfig = {
   name: 'Geoffrey Rugarabamu',
-  title: 'Geoffrey Rugarabamu — Data Governance & Analytics',
+  title: 'Geoffrey Rugarabamu | Data Governance & Analytics',
   description: 'I help organizations trust their data and make better decisions with it. Data governance strategist, analytics leader, and cross-functional partner.',
   url: 'https://joflei.github.io/personal-site',
   email: 'geoffrey.rugarabamu@gmail.com',
