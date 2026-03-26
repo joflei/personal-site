@@ -24,7 +24,8 @@
       "Bash(git commit:*)",
       "Bash(gh run:*)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://joflei.github.io/personal-site/)",
-      "Bash(curl -s https://joflei.github.io/personal-site/)"
+      "Bash(curl -s https://joflei.github.io/personal-site/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://joflei.github.io/personal-site/images/headshot.JPG)"
     ]
   }
 }
