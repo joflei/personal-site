@@ -1,0 +1,64 @@
+{
+  "exam_year": 2025,
+  "exam_type": "CSEE",
+  "total_students": 578117,
+  "total_schools": 6677,
+  "male": 269196,
+  "female": 308921,
+  "divisions": {
+    "I": 56690,
+    "II": 85726,
+    "III": 115594,
+    "IV": 286298,
+    "0": 33809
+  },
+  "pass_rate": 0.9415,
+  "gender_gap": {
+    "male_pass_rate": 0.9506,
+    "female_pass_rate": 0.9336,
+    "male_total": 269196,
+    "female_total": 308921
+  },
+  "by_centre_type": {
+    "school": {
+      "total_students": 555369,
+      "total_schools": 5864,
+      "male": 259934,
+      "female": 295435,
+      "divisions": {
+        "I": 56512,
+        "II": 85225,
+        "III": 114237,
+        "IV": 271540,
+        "0": 27855
+      },
+      "pass_rate": 0.9498,
+      "gender_gap": {
+        "male_pass_rate": 0.958,
+        "female_pass_rate": 0.9427,
+        "male_total": 259934,
+        "female_total": 295435
+      }
+    },
+    "private": {
+      "total_students": 22748,
+      "total_schools": 813,
+      "male": 9262,
+      "female": 13486,
+      "divisions": {
+        "I": 178,
+        "II": 501,
+        "III": 1357,
+        "IV": 14758,
+        "0": 5954
+      },
+      "pass_rate": 0.7383,
+      "gender_gap": {
+        "male_pass_rate": 0.7436,
+        "female_pass_rate": 0.7346,
+        "male_total": 9262,
+        "female_total": 13486
+      }
+    }
+  }
+}

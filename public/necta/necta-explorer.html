@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NECTA CSEE 2025 Explorer | Geoffrey Rugarabamu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="necta-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav>
+            <a href="https://joflei.github.io/personal-site/" class="nav-home">&larr; Home</a>
+            <span class="nav-title">NECTA Explorer</span>
+        </nav>
+    </header>
+
+    <main class="necta-explorer">
+
+        <!-- ─── HERO ─────────────────────────────────── -->
+        <section class="hero" id="hero">
+            <h1>NECTA CSEE 2025</h1>
+            <p class="hero-subtitle">The State of Form 4 Education in Tanzania</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" id="stat-students">—</span>
+                    <span class="stat-label">Students Sat</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number accent" id="stat-quality">—</span>
+                    <span class="stat-label">Div I–III Rate</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="stat-gap">—</span>
+                    <span class="stat-label">Gender Gap</span>
+                </div>
+            </div>
+            <div class="filter-toggle" id="filter-toggle">
+                <button class="filter-btn active" data-filter="school">Schools Only</button>
+                <button class="filter-btn" data-filter="all">All Centres</button>
+                <button class="filter-btn" data-filter="private">Private Only</button>
+            </div>
+            <p class="hero-note">
+                <span id="sample-count">—</span> centres &middot;
+                <span class="filter-hint" id="filter-hint">Showing active schools (S-prefix)</span>
+                &middot; <a href="#methodology">Methodology</a>
+            </p>
+        </section>
+
+        <!-- ─── SECTION 1: NATIONAL PICTURE ──────────── -->
+        <section class="section" id="national-picture">
+            <div class="section-content">
+                <span class="section-number">01</span>
+                <h2>The National Picture</h2>
+                <p class="section-question">How did Tanzania's Form 4 students perform?</p>
+                <div class="chart-container">
+                    <canvas id="chart-divisions"></canvas>
+                </div>
+                <p class="insight" id="insight-national"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 2: THE DIV IV QUESTION ─────────── -->
+        <section class="section" id="div4-question">
+            <div class="section-content">
+                <span class="section-number">02</span>
+                <h2>The Division IV Question</h2>
+                <p class="section-question">What if the biggest group wasn't really "passing"?</p>
+                <div id="div4-container"></div>
+                <p class="insight" id="insight-div4"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 3: GENDER STORY ──────────────── -->
+        <section class="section" id="gender-story">
+            <div class="section-content">
+                <span class="section-number">03</span>
+                <h2>The Gender Story</h2>
+                <p class="section-question">Where does the gap widen?</p>
+                <div class="chart-container chart-container-wide">
+                    <canvas id="chart-gender"></canvas>
+                </div>
+                <p class="insight" id="insight-gender"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 4: SCHOOL TYPES ──────────────── -->
+        <section class="section" id="school-types">
+            <div class="section-content">
+                <span class="section-number">04</span>
+                <h2>Does School Type Matter?</h2>
+                <p class="section-question">All-boys, all-girls, coed, and religious schools compared</p>
+                <div class="chart-container">
+                    <canvas id="chart-school-types"></canvas>
+                </div>
+                <p class="insight" id="insight-school-types"></p>
+
+                <h3 style="font-size:1.125rem;font-weight:600;margin:2.5rem 0 0.375rem;color:#2c2418;">Government vs. Independent</h3>
+                <p class="section-question" style="margin-bottom:1.5rem;">Does ownership shape the quality of results?</p>
+                <div class="chart-container">
+                    <canvas id="chart-ownership"></canvas>
+                </div>
+                <p class="insight" id="insight-ownership"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 5: HIDDEN CHAMPIONS ──────────── -->
+        <section class="section" id="hidden-champions">
+            <div class="section-content">
+                <span class="section-number">05</span>
+                <h2>Hidden Champions</h2>
+                <p class="section-question">Small schools (&le;40 students) ranked separately per NECTA guidelines</p>
+                <div id="champions-container"></div>
+                <p class="insight" id="insight-champions"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 6: SUBJECT FACTOR ────────────── -->
+        <section class="section" id="subject-factor">
+            <div class="section-content">
+                <span class="section-number">06</span>
+                <h2>The Subject Factor</h2>
+                <p class="section-question">Which subjects challenge students most?</p>
+                <div id="subjects-container"></div>
+                <p class="insight" id="insight-subjects"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 7: STEM DEEP DIVE ────────────── -->
+        <section class="section" id="stem-dive">
+            <div class="section-content">
+                <span class="section-number">07</span>
+                <h2>The STEM Question</h2>
+                <p class="section-question">Does offering Additional Mathematics change outcomes?</p>
+                <div id="stem-container"></div>
+                <p class="insight" id="insight-stem"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 8: REGIONAL ──────────────────── -->
+        <section class="section" id="regional">
+            <div class="section-content">
+                <span class="section-number">08</span>
+                <h2>Regional Landscape</h2>
+                <p class="section-question">Performance across Tanzania's districts</p>
+                <div class="chart-container chart-container-wide">
+                    <canvas id="chart-regions"></canvas>
+                </div>
+                <p class="insight" id="insight-regions"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 9: ANOMALIES ────────────────── -->
+        <section class="section" id="anomalies">
+            <div class="section-content">
+                <span class="section-number">09</span>
+                <h2>Anomalies &amp; Surprises</h2>
+                <p class="section-question">Interesting patterns in the data</p>
+                <div class="anomaly-cards" id="anomalies-container"></div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 10: DISTRIBUTION & TOP 1% ────── -->
+        <section class="section" id="distribution">
+            <div class="section-content">
+                <span class="section-number">10</span>
+                <h2>The Distribution</h2>
+                <p class="section-question">Where do schools cluster — and who are the top 1%?</p>
+                <div class="chart-container chart-container-wide">
+                    <canvas id="chart-bell"></canvas>
+                </div>
+                <div id="top1-container"></div>
+                <p class="insight" id="insight-distribution"></p>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 11: SCHOOL SEARCH ────────────── -->
+        <section class="section" id="school-search">
+            <div class="section-content">
+                <span class="section-number">11</span>
+                <h2>Find Your School</h2>
+                <p class="section-question">Search for any school in the dataset</p>
+
+                <div class="filter-toggle" id="size-toggle" style="margin-bottom:1.5rem">
+                    <button class="filter-btn active" data-size="regular">Regular Schools (&gt;40)</button>
+                    <button class="filter-btn" data-size="small">Small Schools (&le;40)</button>
+                    <button class="filter-btn" data-size="all">All Schools</button>
+                </div>
+
+                <div class="search-wrapper">
+                    <input type="text" id="school-input"
+                           placeholder="Start typing a school name..."
+                           autocomplete="off">
+                    <div class="search-results" id="search-results"></div>
+                </div>
+                <div class="school-card hidden" id="school-card">
+                    <h3 id="card-name"></h3>
+                    <p id="card-size-note" style="font-size:0.75rem;color:#8c7e72;margin-bottom:0.75rem;"></p>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <span class="card-stat-value" id="card-students"></span>
+                            <span class="card-stat-label">Students</span>
+                        </div>
+                        <div class="card-stat">
+                            <span class="card-stat-value" id="card-passrate"></span>
+                            <span class="card-stat-label">Pass Rate</span>
+                        </div>
+                        <div class="card-stat">
+                            <span class="card-stat-value" id="card-rank"></span>
+                            <span class="card-stat-label">Percentile</span>
+                        </div>
+                    </div>
+                    <div class="card-chart-container">
+                        <canvas id="chart-school-divisions"></canvas>
+                    </div>
+                    <p class="card-comparison" id="card-comparison"></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── FOOTER ───────────────────────────────────── -->
+    <footer id="methodology">
+        <div class="footer-content">
+            <p class="footer-source">
+                Data source: <a href="https://onlinesys.necta.go.tz/results/2025/csee/index.htm" target="_blank" rel="noopener">
+                    National Examinations Council of Tanzania (NECTA)
+                </a>
+            </p>
+            <p class="footer-author">
+                Built by <a href="https://joflei.github.io/personal-site/" target="_blank" rel="noopener">Geoffrey Rugarabamu</a>
+                &middot; View source &amp; methodology on
+                <a href="https://github.com/joflei" target="_blank" rel="noopener">GitHub</a>
+            </p>
+            <p class="footer-disclaimer">
+                Covers all 6,677 CSEE 2025 centres. Schools with &le;40 candidates are classified as
+                "Small Schools" per NECTA's ranking guidelines (threshold: 35&ndash;40 candidates).
+                Percentile rankings are calculated separately for small and regular schools.
+                Codes starting with S are active schools; P-prefix = private/external candidates.
+                Divisions I&ndash;IV count as passing per NECTA methodology.
+            </p>
+        </div>
+    </footer>
+
+    <script src="necta-charts.js?v=20260328g"></script>
+</body>
+</html>

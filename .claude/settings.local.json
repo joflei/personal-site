@@ -25,7 +25,15 @@
       "Bash(gh run:*)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://joflei.github.io/personal-site/)",
       "Bash(curl -s https://joflei.github.io/personal-site/)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://joflei.github.io/personal-site/images/headshot.JPG)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://joflei.github.io/personal-site/images/headshot.JPG)",
+      "Bash(npm run:*)",
+      "Bash(pkill -f \"astro dev\")",
+      "Bash(curl -s http://localhost:4321/personal-site/experience/)",
+      "Bash(curl -s -I http://localhost:4321/personal-site/resume.pdf)",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(curl -s http://localhost:4322/personal-site/experience/)",
+      "Bash(curl -s http://localhost:4321/personal-site/projects/)",
+      "Bash(curl -s http://localhost:4321/personal-site/)"
     ]
   }
 }

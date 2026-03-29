@@ -1,0 +1,536 @@
+{
+  "subjects": [
+    {
+      "code": "ENGL",
+      "name": "English Language",
+      "total_students": 589694,
+      "grades": {
+        "A": 27073,
+        "B": 44795,
+        "C": 171094,
+        "D": 211018,
+        "F": 118893,
+        "X": 16821
+      },
+      "pass_rate": 0.7699
+    },
+    {
+      "code": "CIV",
+      "name": "Civics",
+      "total_students": 589576,
+      "grades": {
+        "A": 11433,
+        "B": 29453,
+        "C": 160321,
+        "D": 203787,
+        "F": 167831,
+        "X": 16751
+      },
+      "pass_rate": 0.6869
+    },
+    {
+      "code": "GEO",
+      "name": "Geography",
+      "total_students": 589314,
+      "grades": {
+        "A": 14858,
+        "B": 46762,
+        "C": 210332,
+        "D": 178587,
+        "F": 121900,
+        "X": 16875
+      },
+      "pass_rate": 0.7645
+    },
+    {
+      "code": "KISW",
+      "name": "Kiswahili",
+      "total_students": 584778,
+      "grades": {
+        "A": 14644,
+        "B": 80120,
+        "C": 336176,
+        "D": 122770,
+        "F": 14799,
+        "X": 16269
+      },
+      "pass_rate": 0.9469
+    },
+    {
+      "code": "B/MATH",
+      "name": "Basic Mathematics",
+      "total_students": 581477,
+      "grades": {
+        "A": 23376,
+        "B": 17348,
+        "C": 48039,
+        "D": 59946,
+        "F": 416407,
+        "X": 16361
+      },
+      "pass_rate": 0.2557
+    },
+    {
+      "code": "BIO",
+      "name": "Biology",
+      "total_students": 580758,
+      "grades": {
+        "A": 3416,
+        "B": 14607,
+        "C": 120591,
+        "D": 227631,
+        "F": 198772,
+        "X": 15741
+      },
+      "pass_rate": 0.6306
+    },
+    {
+      "code": "HIST",
+      "name": "History",
+      "total_students": 579109,
+      "grades": {
+        "A": 16632,
+        "B": 40236,
+        "C": 186001,
+        "D": 194240,
+        "F": 125204,
+        "X": 16796
+      },
+      "pass_rate": 0.7548
+    },
+    {
+      "code": "CHEM",
+      "name": "Chemistry",
+      "total_students": 186575,
+      "grades": {
+        "A": 10610,
+        "B": 26693,
+        "C": 96107,
+        "D": 41819,
+        "F": 7586,
+        "X": 3760
+      },
+      "pass_rate": 0.9392
+    },
+    {
+      "code": "LIT ENG",
+      "name": "English Literature",
+      "total_students": 162173,
+      "grades": {
+        "A": 4935,
+        "B": 15663,
+        "C": 76511,
+        "D": 44139,
+        "F": 14910,
+        "X": 6015
+      },
+      "pass_rate": 0.871
+    },
+    {
+      "code": "PHY",
+      "name": "Physics",
+      "total_students": 142120,
+      "grades": {
+        "A": 3394,
+        "B": 8247,
+        "C": 47974,
+        "D": 54456,
+        "F": 24197,
+        "X": 3852
+      },
+      "pass_rate": 0.8026
+    },
+    {
+      "code": "E/D/KIISLAMU",
+      "name": "E/D/Kiislamu",
+      "total_students": 96551,
+      "grades": {
+        "A": 5976,
+        "B": 12421,
+        "C": 37928,
+        "D": 23349,
+        "F": 13689,
+        "X": 3188
+      },
+      "pass_rate": 0.8252
+    },
+    {
+      "code": "B/KNOWL",
+      "name": "Bible Knowledge",
+      "total_students": 19371,
+      "grades": {
+        "A": 4615,
+        "B": 5308,
+        "C": 6959,
+        "D": 1497,
+        "F": 769,
+        "X": 223
+      },
+      "pass_rate": 0.9488
+    },
+    {
+      "code": "COMM",
+      "name": "Commerce",
+      "total_students": 14216,
+      "grades": {
+        "A": 845,
+        "B": 1824,
+        "C": 6903,
+        "D": 3586,
+        "F": 790,
+        "X": 268
+      },
+      "pass_rate": 0.9256
+    },
+    {
+      "code": "B/KEEPING",
+      "name": "B/Keeping",
+      "total_students": 13646,
+      "grades": {
+        "A": 102,
+        "B": 322,
+        "C": 3100,
+        "D": 6282,
+        "F": 3535,
+        "X": 305
+      },
+      "pass_rate": 0.7186
+    },
+    {
+      "code": "ARABIC",
+      "name": "Arabic",
+      "total_students": 11702,
+      "grades": {
+        "A": 182,
+        "B": 321,
+        "C": 1869,
+        "D": 3212,
+        "F": 5671,
+        "X": 447
+      },
+      "pass_rate": 0.4772
+    },
+    {
+      "code": "AGRI",
+      "name": "Agriculture",
+      "total_students": 9791,
+      "grades": {
+        "A": 174,
+        "B": 758,
+        "C": 5182,
+        "D": 2975,
+        "F": 527,
+        "X": 175
+      },
+      "pass_rate": 0.9283
+    },
+    {
+      "code": "COMP STUD",
+      "name": "Comp Stud",
+      "total_students": 5733,
+      "grades": {
+        "A": 876,
+        "B": 1372,
+        "C": 2461,
+        "D": 685,
+        "F": 263,
+        "X": 76
+      },
+      "pass_rate": 0.9409
+    },
+    {
+      "code": "FREN",
+      "name": "Fren",
+      "total_students": 2869,
+      "grades": {
+        "A": 58,
+        "B": 180,
+        "C": 888,
+        "D": 1176,
+        "F": 472,
+        "X": 95
+      },
+      "pass_rate": 0.8024
+    },
+    {
+      "code": "F.ART",
+      "name": "F.Art",
+      "total_students": 2798,
+      "grades": {
+        "A": 35,
+        "B": 95,
+        "C": 824,
+        "D": 1332,
+        "F": 450,
+        "X": 62
+      },
+      "pass_rate": 0.817
+    },
+    {
+      "code": "FOOD",
+      "name": "Food",
+      "total_students": 2412,
+      "grades": {
+        "A": 1062,
+        "B": 990,
+        "C": 334,
+        "D": 3,
+        "F": 1,
+        "X": 22
+      },
+      "pass_rate": 0.9905
+    },
+    {
+      "code": "PHY EDU",
+      "name": "Phy Edu",
+      "total_students": 1996,
+      "grades": {
+        "A": 23,
+        "B": 254,
+        "C": 1176,
+        "D": 442,
+        "F": 73,
+        "X": 28
+      },
+      "pass_rate": 0.9494
+    },
+    {
+      "code": "ENG SC",
+      "name": "Eng Sc",
+      "total_students": 1735,
+      "grades": {
+        "A": 132,
+        "B": 221,
+        "C": 667,
+        "D": 441,
+        "F": 249,
+        "X": 25
+      },
+      "pass_rate": 0.8421
+    },
+    {
+      "code": "CHINESE",
+      "name": "Chinese",
+      "total_students": 730,
+      "grades": {
+        "A": 27,
+        "B": 100,
+        "C": 270,
+        "D": 271,
+        "F": 49,
+        "X": 13
+      },
+      "pass_rate": 0.9151
+    },
+    {
+      "code": "BLD CONSTR",
+      "name": "Bld Constr",
+      "total_students": 528,
+      "grades": {
+        "A": 12,
+        "B": 92,
+        "C": 299,
+        "D": 82,
+        "F": 38,
+        "X": 5
+      },
+      "pass_rate": 0.9186
+    },
+    {
+      "code": "ARCH DRAUGHT",
+      "name": "Arch Draught",
+      "total_students": 489,
+      "grades": {
+        "A": 4,
+        "B": 43,
+        "C": 275,
+        "D": 132,
+        "F": 31,
+        "X": 4
+      },
+      "pass_rate": 0.9284
+    },
+    {
+      "code": "THEATRE ART",
+      "name": "Theatre Art",
+      "total_students": 425,
+      "grades": {
+        "A": 91,
+        "B": 145,
+        "C": 160,
+        "D": 12,
+        "F": 10,
+        "X": 7
+      },
+      "pass_rate": 0.96
+    },
+    {
+      "code": "ADD MATH",
+      "name": "Add Math",
+      "total_students": 416,
+      "grades": {
+        "A": 22,
+        "B": 64,
+        "C": 186,
+        "D": 105,
+        "F": 18,
+        "X": 21
+      },
+      "pass_rate": 0.9062
+    },
+    {
+      "code": "ELECTRICAL ENG",
+      "name": "Electrical Eng",
+      "total_students": 359,
+      "grades": {
+        "A": 38,
+        "B": 59,
+        "C": 177,
+        "D": 65,
+        "F": 17,
+        "X": 3
+      },
+      "pass_rate": 0.9443
+    },
+    {
+      "code": "ENG DRAWING",
+      "name": "Eng Drawing",
+      "total_students": 312,
+      "grades": {
+        "A": 44,
+        "B": 67,
+        "C": 131,
+        "D": 47,
+        "F": 18,
+        "X": 5
+      },
+      "pass_rate": 0.9263
+    },
+    {
+      "code": "COMM ENG",
+      "name": "Comm Eng",
+      "total_students": 297,
+      "grades": {
+        "A": 9,
+        "B": 43,
+        "C": 147,
+        "D": 69,
+        "F": 28,
+        "X": 1
+      },
+      "pass_rate": 0.9024
+    },
+    {
+      "code": "ELECTRICAL DRAUGHT",
+      "name": "Electrical Draught",
+      "total_students": 286,
+      "grades": {
+        "A": 4,
+        "B": 51,
+        "C": 187,
+        "D": 27,
+        "F": 11,
+        "X": 6
+      },
+      "pass_rate": 0.9406
+    },
+    {
+      "code": "ELECTRONICS DRAUGHT",
+      "name": "Electronics Draught",
+      "total_students": 259,
+      "grades": {
+        "A": 20,
+        "B": 43,
+        "C": 143,
+        "D": 32,
+        "F": 20,
+        "X": 1
+      },
+      "pass_rate": 0.9189
+    },
+    {
+      "code": "CIVIL ENG SURVEY",
+      "name": "Civil Eng Survey",
+      "total_students": 217,
+      "grades": {
+        "A": 0,
+        "B": 7,
+        "C": 73,
+        "D": 93,
+        "F": 41,
+        "X": 3
+      },
+      "pass_rate": 0.7972
+    },
+    {
+      "code": "AUTOMOTIVE ENG",
+      "name": "Automotive Eng",
+      "total_students": 196,
+      "grades": {
+        "A": 7,
+        "B": 28,
+        "C": 102,
+        "D": 40,
+        "F": 15,
+        "X": 4
+      },
+      "pass_rate": 0.9031
+    },
+    {
+      "code": "PAINT ENG",
+      "name": "Paint Eng",
+      "total_students": 165,
+      "grades": {
+        "A": 3,
+        "B": 15,
+        "C": 98,
+        "D": 27,
+        "F": 21,
+        "X": 1
+      },
+      "pass_rate": 0.8667
+    },
+    {
+      "code": "MANUFACTURING ENG",
+      "name": "Manufacturing Eng",
+      "total_students": 145,
+      "grades": {
+        "A": 2,
+        "B": 25,
+        "C": 89,
+        "D": 21,
+        "F": 5,
+        "X": 3
+      },
+      "pass_rate": 0.9448
+    },
+    {
+      "code": "TEXTILE",
+      "name": "Textile",
+      "total_students": 137,
+      "grades": {
+        "A": 16,
+        "B": 41,
+        "C": 72,
+        "D": 8,
+        "F": 0,
+        "X": 0
+      },
+      "pass_rate": 1.0
+    },
+    {
+      "code": "MUSIC",
+      "name": "Music",
+      "total_students": 121,
+      "grades": {
+        "A": 27,
+        "B": 12,
+        "C": 51,
+        "D": 26,
+        "F": 4,
+        "X": 1
+      },
+      "pass_rate": 0.9587
+    }
+  ]
+}
