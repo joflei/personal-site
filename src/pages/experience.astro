@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ExperienceCard from '../components/ExperienceCard.astro';
+import ResumeSection from '../components/ResumeSection.astro';
 
 const experiences = [
   {
@@ -68,6 +69,7 @@ const experiences = [
       </p>
 
       <div class="space-y-6">
+        <ResumeSection />
         {experiences.map((exp) => (
           <ExperienceCard
             company={exp.company}
