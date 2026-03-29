@@ -1,0 +1,16 @@
+{
+  "div4_narrative": "Division IV remains the most common outcome, representing nearly half of all results. While this division counts as passing per NECTA methodology, it reflects foundational competency rather than mastery of the material.",
+  "gender_by_category": {
+    "Boys": { "pass_rate": 0.958 },
+    "Girls": { "pass_rate": 0.943 }
+  },
+  "school_types": {
+    "All-Girls": { "pass_rate": 1.0, "div_1_share": 0.18 },
+    "All-Boys": { "pass_rate": 0.95, "div_1_share": 0.09 },
+    "Coeducational": { "pass_rate": 0.93, "div_1_share": 0.08 },
+    "Religious": { "pass_rate": 0.95, "div_1_share": 0.18 }
+  },
+  "addmath_story": "Schools offering Additional Mathematics show higher Division I rates (12%) compared to those without (8%), suggesting mathematics depth correlates with overall academic strength.",
+  "regions": [],
+  "region_names": {}
+}
