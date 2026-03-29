@@ -156,14 +156,14 @@ function renderDiv4Narrative() {
         <div class="anomaly-card">
             <h4>Division IV: Pass or Fail?</h4>
             <span class="anomaly-stat">${whole(d.div4_pct)} of all students</span>
-            <p><strong>${fmt(d.div4_count)}</strong> students — nearly <strong>half</strong> of all test-takers — land in Division IV,
-               the lowest passing grade. They are officially "passing" but scored between 18–21 points on a 7-point-per-subject scale.
+            <p><strong>${fmt(d.div4_count)}</strong> students, nearly <strong>half</strong> of all test-takers, land in Division IV,
+               the lowest passing grade. They are officially "passing" but scored between 18 and 21 points on a 7-point-per-subject scale.
                Division IV is essentially the minimum viable pass.</p>
         </div>
         <div class="anomaly-card">
             <h4>What if Division IV Was Failing?</h4>
             <span class="anomaly-stat">${whole(d.current_pass_rate)} → ${whole(d.without_div4_rate)}</span>
-            <p>The national pass rate would <strong>collapse from ${whole(d.current_pass_rate)} to ${whole(d.without_div4_rate)}</strong> —
+            <p>The national pass rate would <strong>collapse from ${whole(d.current_pass_rate)} to ${whole(d.without_div4_rate)}</strong>,
                a <strong>${d.drop_pp}pp drop</strong>. <strong>${whole(d.schools_would_flip_pct)}</strong> of schools
                (${fmt(d.schools_would_flip)}) would see their majority flip from passing to failing.
                Is a 95% pass rate meaningful when half of "passing" students barely clear the bar?</p>
@@ -279,8 +279,8 @@ function renderGenderChart() {
         `<strong>${maxCat}</strong> has the widest gender gap at <strong>${Math.round(maxGap)}pp</strong>. ` +
         `In Basic Maths, <strong>${whole(bm.male_rate)}</strong> of boys pass vs ` +
         `<strong>${whole(bm.female_rate)}</strong> of girls. ` +
-        `The bar widths show each gender's relative share of passing — ` +
-        `the more uneven the split, the larger the gap.`;
+        `Bar widths show each gender's share of passing students. ` +
+        `The more uneven the split, the larger the gap.`;
 }
 
 // ─── Chart 4: School Types ──────────────────────────────────
@@ -316,7 +316,7 @@ function renderSchoolTypes() {
     const diff = Math.round((best.avg_pass_rate - coed.avg_pass_rate) * 100);
     const minPct = Math.round(types.filter(t => !t.type.includes('Coed')).reduce((s, t) => s + t.students, 0) / types.reduce((s, t) => s + t.students, 0) * 100);
     document.getElementById('insight-school-types').innerHTML =
-        `<strong>${best.type}</strong> schools lead at <strong>${whole(best.avg_pass_rate)}</strong> — ` +
+        `<strong>${best.type}</strong> schools lead at <strong>${whole(best.avg_pass_rate)}</strong>, ` +
         `<strong>${diff}pp</strong> above coed schools (${whole(coed.avg_pass_rate)}). ` +
         `Single-gender and religious schools outperform, but represent only <strong>${minPct}%</strong> of students.<br>` +
         `<em>* Religious schools identified by name keywords (Seminary, Islamic, Lutheran, Catholic, Adventist, Anglican, etc.). Results should be verified.</em>`;
@@ -428,11 +428,11 @@ function renderOwnership(allSchools) {
     const ratio = Math.round(misDiv1Pct / govDiv1Pct);
     document.getElementById('insight-ownership').innerHTML =
         `Mission and religious schools produce <strong>${misDiv1Pct}%</strong> Division I students, ` +
-        `compared to <strong>${govDiv1Pct}%</strong> at government schools — a <strong>${ratio}×</strong> difference. ` +
+        `compared to <strong>${govDiv1Pct}%</strong> at government schools, a <strong>${ratio}×</strong> difference. ` +
         `Pass rates are similar across all types; the gap is in the <em>quality</em> of passes. ` +
         `${Math.round(m.schools / (m.schools + g.schools + groups['Private Commercial'].schools) * 100)}% of schools are mission/religious, ` +
         `yet they account for a disproportionate share of top results. ` +
-        `<em>Classification is name-based (Seminary, Loreto, Lutheran, Academy, etc.) — not from an official registry.</em>`;
+        `<em>Classification is name-based (Seminary, Loreto, Lutheran, Academy, etc.) and not from an official registry.</em>`;
 }
 
 // ─── Section 5: Hidden Champions ────────────────────────────
@@ -486,11 +486,11 @@ function renderChampions(schools) {
     container.innerHTML = html;
 
     const perfect = top10.filter(c => c.pass_rate === 1).length;
-    let insight = `Top small schools achieve remarkable results despite limited resources.`;
+    let insight = `Top small schools hold their own against much larger ones.`;
     if (perfect > 0) insight += ` <strong>${perfect}</strong> of the top 10 have a perfect 100% pass rate.`;
     if (anomalies.length > 0) {
-        insight += ` However, <strong>${anomalies.length}</strong> very small schools (&lt;15 students) have pass rates below 70% — ` +
-            `these may lack the critical mass for effective teaching.`;
+        insight += ` On the other end, <strong>${anomalies.length}</strong> very small schools (&lt;15 students) have pass rates below 70%. ` +
+            `Schools this small rarely have the staff depth to cover all subjects well.`;
     }
     document.getElementById('insight-champions').innerHTML = insight;
 }
@@ -556,8 +556,8 @@ function renderSTEM() {
             <h4>The Add Math Effect on Students</h4>
             <span class="anomaly-stat">${whole(am.dual_bm_pass_rate)} vs ${whole(am.overall_bm_pass_rate)}</span>
             <p>Students who take both Basic Math and Additional Math have a <strong>${whole(am.dual_bm_pass_rate)}</strong> Basic Math pass rate
-               — vs the national average of <strong>${whole(am.overall_bm_pass_rate)}</strong>.
-               That's ${fmt(am.dual_takers)} students with dramatically stronger performance.</p>
+               versus the national average of <strong>${whole(am.overall_bm_pass_rate)}</strong>.
+               That covers ${fmt(am.dual_takers)} students.</p>
         </div>
         <div class="anomaly-card">
             <h4>The Add Math Effect on Schools</h4>
@@ -568,8 +568,8 @@ function renderSTEM() {
         </div>
     </div>`;
     document.getElementById('insight-stem').innerHTML =
-        `Add Math appears strongly correlated with better Basic Math outcomes — though causation is unclear. ` +
-        `These ${am.schools_with_addmath} schools may attract better math teachers or select stronger students.`;
+        `Students at schools that offer Add Math score better in Basic Math, though whether it's the curriculum or the students is hard to separate. ` +
+        `These ${am.schools_with_addmath} schools may recruit stronger math teachers or draw more motivated students.`;
 }
 
 // ─── Section 8: Regional ────────────────────────────────────
@@ -588,13 +588,13 @@ function renderRegions() {
             <div style="text-align:center;padding:2rem 1rem;border:1px dashed ${C.border};border-radius:6px;background:${C.sandDark};">
                 <p style="font-size:1.125rem;font-weight:600;color:${C.espresso};margin-bottom:0.75rem;">Region Data Unavailable</p>
                 <p style="font-size:0.875rem;color:${C.warmGray};max-width:480px;margin:0 auto;line-height:1.7;">
-                    NECTA school codes are sequential — they don't encode geographic location.
+                    NECTA school codes are sequential and don't encode geographic location.
                     Region names are only available on each school's individual results page.
-                    A future update will incorporate this data to enable regional comparisons.
+                    A future update will pull this data to enable regional comparisons.
                 </p>
             </div>`;
         document.getElementById('insight-regions').innerHTML =
-            `Regional analysis requires region data from ~6,700 individual school result pages — a planned enhancement.`;
+            `Regional breakdowns require pulling data from ~6,700 individual school pages. Planned for a future update.`;
         return;
     }
 
@@ -661,7 +661,7 @@ function renderAnomalies(schools, summary, subjectData) {
     const basicMath = subjectData.subjects.find(s => s.code === 'B/MATH');
     if (basicMath) {
         cards.push({ title: 'The Basic Math Crisis', stat: whole(1 - basicMath.pass_rate) + ' fail',
-            text: `<strong>${whole(1 - basicMath.pass_rate)}</strong> of students fail Basic Mathematics — the lowest pass rate of any compulsory subject.` });
+            text: `<strong>${whole(1 - basicMath.pass_rate)}</strong> of students fail Basic Mathematics, the lowest pass rate of any compulsory subject.` });
     }
 
     const perfectSchools = filtered.filter(s => s.pass_rate === 1 && s.total_students >= 10);
@@ -680,7 +680,7 @@ function renderAnomalies(schools, summary, subjectData) {
     const gap = summary.gender_gap;
     const femalePct = Math.round(gap.female_total / (gap.male_total + gap.female_total) * 100);
     cards.push({ title: 'Enrollment Imbalance', stat: femalePct + '% female',
-        text: `Female students make up <strong>${femalePct}%</strong> of test-takers — yet have a lower pass rate across most subjects.` });
+        text: `Female students make up <strong>${femalePct}%</strong> of test-takers but have a lower pass rate across most subjects.` });
 
     const niche = subjectData.subjects.filter(s => s.total_students < 500 && s.total_students >= 50);
     if (niche.length > 0) {
@@ -792,7 +792,7 @@ function renderDistribution(schools) {
     [regTop, smallTop].forEach(g => {
         if (g.top.length === 0) return;
         html += `<h4 style="margin-top:1.5rem;font-size:0.9375rem;color:${C.espresso};">
-            Top 1% — ${g.label} <span style="color:${C.warmGray};font-weight:400;">(${g.cutoff} of ${fmt(g.total)})</span></h4>`;
+            Top 1%: ${g.label} <span style="color:${C.warmGray};font-weight:400;">(${g.cutoff} of ${fmt(g.total)})</span></h4>`;
         html += `<table class="champions-table" style="margin-top:0.5rem">
             <thead><tr><th>#</th><th>School</th><th>Students</th><th>Quality</th><th>Pass Rate</th></tr></thead><tbody>`;
         g.top.forEach((s, i) => {
@@ -813,7 +813,7 @@ function renderDistribution(schools) {
     const smallMedian = small.length > 0 ? [...small].sort((a, b) => a.pass_rate - b.pass_rate)[Math.floor(small.length / 2)] : null;
     let insight = `The median regular school has a <strong>${whole(regMedian?.pass_rate || 0)}</strong> pass rate.`;
     if (smallMedian) {
-        insight += ` Small schools have a wider spread — their median is <strong>${whole(smallMedian.pass_rate)}</strong>.`;
+        insight += ` Small schools have a wider spread, with a median of <strong>${whole(smallMedian.pass_rate)}</strong>.`;
     }
     insight += ` The distribution shows where schools cluster and the long tail at both extremes.`;
     document.getElementById('insight-distribution').innerHTML = insight;
@@ -902,7 +902,7 @@ function showSchoolCard(school, sorted, scopedSchools) {
     document.getElementById('card-name').textContent = `${school.code} — ${school.name}${typeLabel}`;
 
     const sizeNote = isSmall
-        ? `Small School (≤${SMALL_THRESHOLD} students) — ranked separately per NECTA guidelines`
+        ? `Small School (≤${SMALL_THRESHOLD} students), ranked separately per NECTA guidelines`
         : `Regular School (>${SMALL_THRESHOLD} students)`;
     document.getElementById('card-size-note').textContent = sizeNote;
 
