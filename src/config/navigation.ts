@@ -20,6 +20,7 @@ export const navigationItems: NavItem[] = [
   { label: 'Home',       href: '/',           enabled: true  },
   { label: 'About',      href: '/about',      enabled: true  },
   { label: 'Experience',  href: '/experience', enabled: true  },
+  { label: 'Projects',   href: '/projects',   enabled: true  },
   { label: 'Contact',    href: '/contact',    enabled: true  },
 
   // ----------------------------------------------------------
@@ -27,7 +28,6 @@ export const navigationItems: NavItem[] = [
   // Change `enabled` to `true` when you're ready to launch them.
   // ----------------------------------------------------------
   { label: 'Writing',    href: '/writing',    enabled: false },
-  { label: 'Projects',   href: '/projects',   enabled: false },
 ];
 
 export const siteConfig = {
