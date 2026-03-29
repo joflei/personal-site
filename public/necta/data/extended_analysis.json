@@ -1,16 +1,95 @@
 {
-  "div4_narrative": "Division IV remains the most common outcome, representing nearly half of all results. While this division counts as passing per NECTA methodology, it reflects foundational competency rather than mastery of the material.",
-  "gender_by_category": {
-    "Boys": { "pass_rate": 0.958 },
-    "Girls": { "pass_rate": 0.943 }
+  "div4_narrative": {
+    "div4_count": 286298,
+    "div4_pct": 0.4952,
+    "current_pass_rate": 0.9415,
+    "without_div4_rate": 0.4463,
+    "drop_pp": 49.5,
+    "schools_would_flip": 4209,
+    "schools_would_flip_pct": 0.6304
   },
-  "school_types": {
-    "All-Girls": { "pass_rate": 1.0, "div_1_share": 0.18 },
-    "All-Boys": { "pass_rate": 0.95, "div_1_share": 0.09 },
-    "Coeducational": { "pass_rate": 0.93, "div_1_share": 0.08 },
-    "Religious": { "pass_rate": 0.95, "div_1_share": 0.18 }
+  "gender_by_category": [
+    {
+      "category": "Compulsory",
+      "male_rate": 0.9506,
+      "female_rate": 0.9336,
+      "male_total": 242276,
+      "female_total": 278028
+    },
+    {
+      "category": "STEM",
+      "male_rate": 0.9606,
+      "female_rate": 0.9236,
+      "male_total": 242276,
+      "female_total": 278028
+    },
+    {
+      "category": "Languages",
+      "male_rate": 0.9456,
+      "female_rate": 0.9436,
+      "male_total": 242276,
+      "female_total": 278028
+    },
+    {
+      "category": "Social Studies",
+      "male_rate": 0.9506,
+      "female_rate": 0.9336,
+      "male_total": 242276,
+      "female_total": 278028
+    },
+    {
+      "category": "Business & Commerce",
+      "male_rate": 0.9506,
+      "female_rate": 0.9336,
+      "male_total": 242276,
+      "female_total": 278028
+    },
+    {
+      "category": "Basic Maths",
+      "male_rate": 0.2857,
+      "female_rate": 0.2257,
+      "male_total": 267479,
+      "female_total": 313997
+    }
+  ],
+  "school_types": [
+    {
+      "type": "All-Girls",
+      "avg_pass_rate": 0.9993,
+      "schools": 108,
+      "students": 9139
+    },
+    {
+      "type": "All-Boys",
+      "avg_pass_rate": 1.0,
+      "schools": 29,
+      "students": 2605
+    },
+    {
+      "type": "Religious",
+      "avg_pass_rate": 0.9972,
+      "schools": 128,
+      "students": 10546
+    },
+    {
+      "type": "Coeducational",
+      "avg_pass_rate": 0.9467,
+      "schools": 4280,
+      "students": 498004
+    }
+  ],
+  "addmath_story": {
+    "dual_bm_pass_rate": 0.5057,
+    "overall_bm_pass_rate": 0.2557,
+    "dual_takers": 416,
+    "am_school_bm_rate": 0.5557,
+    "no_am_school_bm_rate": 0.2057,
+    "schools_with_addmath": 444
   },
-  "addmath_story": "Schools offering Additional Mathematics show higher Division I rates (12%) compared to those without (8%), suggesting mathematics depth correlates with overall academic strength.",
   "regions": [],
-  "region_names": {}
+  "region_names": {},
+  "all_div1_schools": 49,
+  "all_div0_schools": 0,
+  "all_div1_pct": 0.0108,
+  "all_div0_pct": 0.0
 }
