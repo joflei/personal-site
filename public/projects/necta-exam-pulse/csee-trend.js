@@ -1,6 +1,6 @@
 /**
  * csee-trend.js
- * CSEE Season 1: 22-year scrollytelling page
+ * CSEE Part 1: 22-year scrollytelling page
  * Vanilla JS + Chart.js. No framework dependencies.
  */
 
@@ -740,7 +740,7 @@ function buildCh6() {
     botTable.appendChild(botBody);
     botEl.appendChild(botTable);
 
-    // Act 4: Perfect score : only St. Francis Girls 2024 (all 91 students scored aggregate 7)
+    // Section 4: Perfect score : only St. Francis Girls 2024 (all 91 students scored aggregate 7)
     const psEl = document.getElementById('ch6-perfect-score');
     if (psEl) {
         const card = document.createElement('div');
