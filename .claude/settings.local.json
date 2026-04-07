@@ -33,7 +33,17 @@
       "Bash(pkill -f \"npm run dev\")",
       "Bash(curl -s http://localhost:4322/personal-site/experience/)",
       "Bash(curl -s http://localhost:4321/personal-site/projects/)",
-      "Bash(curl -s http://localhost:4321/personal-site/)"
+      "Bash(curl -s http://localhost:4321/personal-site/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://joflei.github.io/personal-site/necta/necta-explorer.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://joflei.github.io/personal-site/necta/data/national_summary.json\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://joflei.github.io/personal-site/necta/data/schools_full.json\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://joflei.github.io/personal-site/necta/data/subject_analysis.json\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://joflei.github.io/personal-site/necta/data/extended_analysis.json\")",
+      "Bash(curl -s \"https://joflei.github.io/personal-site/necta/data/extended_analysis.json\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\" \"https://joflei.github.io/personal-site/necta/data/schools_full.json\")",
+      "Bash(python3 -c \":*)",
+      "Bash(python3:*)"
     ]
   }
 }
