@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Season 1 · CSEE: 22 Years of Tanzania's Form 4 Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="necta-styles.css" />
+
+  <style>
+    /* ─── Trend page–specific overrides ─────────────────────── */
+
+    /* Season label */
+    .season-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d97757;
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+    }
+    .season-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #d97757;
+    }
+
+    /* Hero for trend page */
+    .trend-hero {
+      text-align: center;
+      padding: 5rem 2rem 3.5rem;
+      border-bottom: 1px solid #d4c8b8;
+    }
+    .trend-hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #2c2418;
+      max-width: 680px;
+      margin: 0 auto 0.75rem;
+      line-height: 1.2;
+    }
+    .trend-hero .tagline {
+      font-size: 1rem;
+      color: #8c7e72;
+      margin-bottom: 2.5rem;
+    }
+    .trend-hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 5vw, 5rem);
+      flex-wrap: wrap;
+    }
+
+    /* Sticky chapter nav */
+    #chapter-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #faf6f1;
+      border-bottom: 1px solid #d4c8b8;
+      padding: 0 2rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #chapter-nav::-webkit-scrollbar { display: none; }
+    #chapter-nav ul {
+      display: flex;
+      list-style: none;
+      max-width: 900px;
+      margin: 0 auto;
+      gap: 0;
+    }
+    #chapter-nav li a {
+      display: block;
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #8c7e72;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    #chapter-nav li a:hover { color: #2c2418; }
+    #chapter-nav li a.active {
+      color: #2c2418;
+      border-bottom-color: #d97757;
+    }
+
+    /* Chapter sections */
+    .ch-section {
+      border-bottom: 1px solid #d4c8b8;
+      padding: 5rem 2rem;
+    }
+    .ch-section:last-of-type { border-bottom: none; }
+    .ch-content {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* Chapter header */
+    .ch-eyebrow {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #d4c8b8;
+      margin-bottom: 0.75rem;
+    }
+    .ch-question {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #2c2418;
+      margin-bottom: 1.5rem;
+    }
+    .ch-intro {
+      font-size: 1rem;
+      color: #3a2e22;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+    .ch-intro p + p { margin-top: 1rem; }
+
+    /* Chart containers */
+    .chart-wrap {
+      background: #f0ebe4;
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .chart-wrap canvas { display: block; }
+    .chart-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #2c2418;
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .chart-note {
+      font-size: 0.75rem;
+      color: #8c7e72;
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    /* Annotation callout on chart */
+    .chart-annotation {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #d97757;
+      color: #fff;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      margin-top: 0.5rem;
+    }
+
+    /* Data callout cards */
+    .callout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .callout-card {
+      background: #f0ebe4;
+      border-radius: 6px;
+      padding: 1.25rem 1.25rem 1rem;
+    }
+    .callout-card .cc-number {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #2c2418;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .callout-card .cc-number.accent { color: #d97757; }
+    .callout-card .cc-label {
+      font-size: 0.75rem;
+      color: #8c7e72;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Inference annotation */
+    .inference-box {
+      background: #f7f2ec;
+      border-left: 3px solid #d4c8b8;
+      border-radius: 0 4px 4px 0;
+      padding: 0.875rem 1.125rem;
+      margin-bottom: 1.5rem;
+    }
+    .inference-box .inf-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      margin-bottom: 0.35rem;
+    }
+    .inference-box p {
+      font-size: 0.875rem;
+      color: #5a4e44;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Source transition tag */
+    .source-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      vertical-align: middle;
+    }
+    .source-tag.tetea { background: #e8e0d6; color: #5a4e44; }
+    .source-tag.necta { background: #d97757; color: #fff; }
+
+    /* "What this raises" */
+    .raises-box {
+      border-top: 1px solid #d4c8b8;
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+    }
+    .raises-box .raises-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      margin-bottom: 0.5rem;
+    }
+    .raises-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .raises-box ul li {
+      font-size: 0.9375rem;
+      color: #5a4e44;
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      position: relative;
+      line-height: 1.55;
+    }
+    .raises-box ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #d4c8b8;
+    }
+
+    /* Chapter 4 table */
+    .school-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    .school-table thead th {
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      padding: 0.5rem 0.5rem 0.5rem 0;
+      border-bottom: 1px solid #d4c8b8;
+    }
+    .school-table thead th:last-child { text-align: right; }
+    .school-table tbody tr { border-bottom: 1px solid #e8e0d6; }
+    .school-table tbody tr:last-child { border-bottom: none; }
+    .school-table tbody td {
+      padding: 0.55rem 0.5rem 0.55rem 0;
+      color: #2c2418;
+      vertical-align: middle;
+    }
+    .school-table tbody td:last-child { text-align: right; }
+    .school-rank {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #d4c8b8;
+      width: 1.5rem;
+    }
+    .school-spark {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .spark-bar-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 1px;
+      height: 24px;
+    }
+    .spark-bar {
+      flex: 1;
+      background: #d97757;
+      border-radius: 1px 1px 0 0;
+      min-height: 1px;
+      opacity: 0.7;
+    }
+
+    /* Ch5 regional table */
+    .region-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid #e8e0d6;
+      font-size: 0.875rem;
+    }
+    .region-row:last-child { border-bottom: none; }
+    .region-name { color: #2c2418; font-weight: 500; font-size: 0.8125rem; word-break: break-word; }
+    .region-bar-wrap { flex: 1; }
+    .region-rate {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #2c2418;
+      text-align: right;
+      min-width: 3.5rem;
+    }
+    .div1-bar-bg {
+      height: 6px;
+      background: #e8e0d6;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .div1-bar-fill {
+      height: 100%;
+      background: #d97757;
+      border-radius: 3px;
+    }
+
+    /* Ch6 spotlight cards */
+    .spotlight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .spotlight-grid { grid-template-columns: 1fr; }
+    }
+    .spotlight-card {
+      border: 1px solid #d4c8b8;
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+    .spotlight-card .sp-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      margin-bottom: 0.5rem;
+    }
+    .spotlight-card .sp-school {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c2418;
+      margin-bottom: 0.25rem;
+    }
+    .spotlight-card .sp-region {
+      font-size: 0.8125rem;
+      color: #8c7e72;
+      margin-bottom: 0.75rem;
+    }
+    .spotlight-card .sp-stat {
+      font-size: 0.875rem;
+      color: #3a2e22;
+      line-height: 1.6;
+    }
+    .spotlight-card .sp-stat strong { color: #d97757; }
+
+    /* Ch6 extremes mini-table */
+    .extremes-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      margin-bottom: 0.5rem;
+    }
+    .extremes-table thead th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      padding: 0.35rem 0.5rem 0.35rem 0;
+      border-bottom: 1px solid #d4c8b8;
+    }
+    .extremes-table tbody tr { border-bottom: 1px solid #e8e0d6; }
+    .extremes-table tbody td {
+      padding: 0.45rem 0.5rem 0.45rem 0;
+      color: #2c2418;
+    }
+
+    /* Footer */
+    .trend-footer {
+      background: #f0ebe4;
+      padding: 4rem 2rem;
+      border-top: 1px solid #d4c8b8;
+    }
+    .trend-footer-content {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .trend-footer h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .trend-footer .footer-sub {
+      font-size: 0.875rem;
+      color: #8c7e72;
+      margin-bottom: 2rem;
+    }
+    .open-questions {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+    .open-questions li {
+      background: #faf6f1;
+      border: 1px solid #d4c8b8;
+      border-radius: 6px;
+      padding: 1rem 1.125rem;
+    }
+    .open-questions li .q-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #2c2418;
+      margin-bottom: 0.3rem;
+      font-style: italic;
+    }
+    .open-questions li .q-note {
+      font-size: 0.75rem;
+      color: #8c7e72;
+    }
+    .season-roadmap {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .season-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      padding: 0.5rem 0.875rem;
+      border: 1px solid #d4c8b8;
+      border-radius: 4px;
+      background: #faf6f1;
+      color: #2c2418;
+    }
+    .season-pill.active {
+      background: #2c2418;
+      color: #faf6f1;
+      border-color: #2c2418;
+    }
+    .season-pill .sp-status {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8c7e72;
+    }
+    .season-pill.active .sp-status { color: #d4c8b8; }
+
+    /* Ch8 school-type stat grid */
+    .type-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .type-col {
+      background: #f0ebe4;
+      border-radius: 6px;
+      padding: 1.125rem 1.125rem 0.875rem;
+    }
+    .type-col-header {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8c7e72;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #d4c8b8;
+      padding-bottom: 0.5rem;
+    }
+    .type-stat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .type-stat-num {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #2c2418;
+      line-height: 1;
+    }
+    .type-stat-num.accent { color: #d97757; }
+    .type-stat-label {
+      font-size: 0.7rem;
+      color: #8c7e72;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .type-stat-footnote {
+      font-size: 0.68rem;
+      color: #b0a594;
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 500px) {
+      .type-stat-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .ch-section { padding: 3.5rem 1.25rem; }
+      .trend-hero { padding: 3.5rem 1.25rem 2.5rem; }
+      #chapter-nav { padding: 0 1.25rem; }
+      .chart-wrap { padding: 1rem; }
+      .callout-grid { grid-template-columns: 1fr 1fr; }
+      .open-questions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Site header ─────────────────────────────────────────── -->
+<header class="site-header">
+  <nav>
+    <a href="../../" class="nav-home">← Back to Projects</a>
+    <span class="nav-title">Season 1 · CSEE</span>
+  </nav>
+</header>
+
+<!-- ─── Hero ────────────────────────────────────────────────── -->
+<section class="trend-hero">
+  <a href="#ch1" class="season-label">Season 1 · CSEE</a>
+  <h1>22 years of Tanzania's Form 4 results: what the numbers say</h1>
+  <p class="tagline">2003 – 2025 &nbsp;·&nbsp; enrolled secondary schools &nbsp;·&nbsp; 8.5 million candidates</p>
+  <div class="trend-hero-stats">
+    <div class="stat">
+      <span class="stat-number accent" id="hero-schools">…</span>
+      <span class="stat-label">School growth (2003 → 2025)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number" id="hero-candidates">…</span>
+      <span class="stat-label">Candidate growth (2003 → 2025)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number" id="hero-growth">…</span>
+      <span class="stat-label">consecutive years of rising pass rates</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Sticky chapter nav ──────────────────────────────────── -->
+<nav id="chapter-nav" aria-label="Chapters">
+  <ul>
+    <li><a href="#ch1" data-ch="ch1">1 · Growth</a></li>
+    <li><a href="#ch2" data-ch="ch2">2 · The 2012 Shift</a></li>
+    <li><a href="#ch3" data-ch="ch3">3 · Gender</a></li>
+    <li><a href="#ch4" data-ch="ch4">4 · Resilient Schools</a></li>
+    <li><a href="#ch5" data-ch="ch5">5 · Regions</a></li>
+    <li><a href="#ch6" data-ch="ch6">6 · The Extremes</a></li>
+    <li><a href="#ch7" data-ch="ch7">7 · School Size</a></li>
+    <li><a href="#ch8" data-ch="ch8">8 · School Type</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 1: Growth                                        -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch1">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 1</span>
+    <h2 class="ch-question">How did 61K students become 570K?</h2>
+
+    <div class="ch-intro">
+      <p>In 2003, roughly 61K students sat Tanzania's Form 4 examinations at government and mission secondary schools. In 2025, that number was 570K, a <strong>9× expansion</strong> over 22 years. The school count grew in parallel: from 908 schools in 2003 to 5,864 in 2025.</p>
+      <p>This chapter traces the raw growth. The question that follows every other chapter is: did the quality of outcomes scale with the volume?</p>
+    </div>
+
+    <div class="callout-grid reveal" id="ch1-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Candidates and schools per year</div>
+      <canvas id="ch1-chart" height="280"></canvas>
+      <p class="chart-note">
+        <span class="source-tag tetea">TETEA</span> 2003–2021 &nbsp;
+        <span class="source-tag necta">NECTA</span> 2022–2025.
+        Data from two separate sources with slightly different collection methods (see <a href="#ch2">Chapter 2</a> for the 2022 transition note).
+        <strong>2014 note:</strong> The 2014 bar is lower than neighboring years (245K vs 365K in 2013). This is confirmed real data: two independent scrapers arrived at the same count, and zero schools are missing student rows. The lower figure reflects a genuine anomaly year: 29% Division 0 and lower average school enrollment, not a data gap.
+      </p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>The school count grew 6.5× but candidate count grew 9.4×; classes are getting larger on average. What does that mean for learning conditions?</li>
+        <li>Expansion was not steady: there are visible acceleration points. What policy changes drove them?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 2: The 2012 Shift                                -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch2">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 2</span>
+    <h2 class="ch-question">What changed in 2012?</h2>
+
+    <div class="ch-intro">
+      <p>The pass rate did not drop in 2013. It bottomed out in 2012, at <strong>34.5%</strong>, the worst year in the 22-year record. By 2013, it had already recovered to 60.8%. The real story is a collapse driven by rapid expansion from 2008 to 2012, followed by a long, sustained recovery to 94.9% in 2025.</p>
+    </div>
+
+
+    <div class="callout-grid reveal" id="ch2-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Division composition by year</div>
+      <canvas id="ch2-stacked" height="300"></canvas>
+      <p class="chart-note">
+        Stacked bars show the proportion of each division. Division 0 appears from 2013 onwards.
+        <span class="source-tag necta">NECTA</span> data starts 2022; minor methodology differences may affect comparability.
+      </p>
+    </div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Pass rate (Division I–IV ÷ students who sat)</div>
+      <canvas id="ch2-passrate" height="200"></canvas>
+      <p class="chart-note">
+        Pass rate calculated from students who sat the exam (excluding absent and withheld candidates).
+        Pre-2013 values are near 100% because Division 0 was not yet recorded; they are not comparable to post-2013 figures.
+      </p>
+    </div>
+
+    <div class="inference-box reveal">
+      <p class="inf-label">Inference: see note</p>
+      <p><strong>What the data shows:</strong> Failure rates rose from under 12% in 2003–2007 to 65.5% by 2012 as school enrollment nearly tripled. The system then recovered steadily, reaching 5% in 2025.</p>
+      <p style="margin-top:0.5rem"><strong>What this might mean:</strong> Rapid school expansion under the <a href="https://www.moe.go.tz/en/projects/secondary-education-development-programme-sedp" target="_blank" rel="noopener" style="color:#d97757">Secondary Education Development Programme (SEDP)</a> (2007–2012) outpaced teacher supply and infrastructure. Recovery since 2013 may reflect policy interventions, but which factor drove how much is not determinable from this data alone.</p>
+      <p style="margin-top:0.5rem"><strong>Alternative explanations:</strong> Cohort composition shifts, examination difficulty changes, or grading methodology differences could each partially explain the pattern.</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>Failure rates peaked at 65.5% in 2012, during the height of rapid expansion. By 2025 they are at 5%. What changed in the system between 2012 and 2025?</li>
+        <li>The recovery has been unbroken for 13 years. Is it structural improvement, or is the exam getting easier?</li>
+        <li>Division I rates also improved: from 1.3% in 2012 to 10.2% in 2025. Is the top end genuinely stronger, or just less crowded at the bottom?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 3: Gender                                        -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch3">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 3</span>
+    <h2 class="ch-question">When did girls quietly take over?</h2>
+
+    <div class="ch-intro">
+      <p>For more than a decade, boys were the majority of CSEE candidates. In 2013, 53.8% of secondary school candidates were male. Then, between 2014 and 2015, the numbers crossed. By 2025, <strong>53.3% of all candidates are female</strong>, a sustained reversal that has held for ten years.</p>
+      <p>Whether this reflects policy changes, social shifts, or both is beyond what the data alone can determine. What the data shows clearly is the crossover and what happened to pass rates on each side of it.</p>
+    </div>
+
+    <div class="callout-grid reveal" id="ch3-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Male vs female candidates per year</div>
+      <canvas id="ch3-area" height="260"></canvas>
+      <p class="chart-note">Secondary school candidates with sex recorded. Open-centre candidates excluded. 67 rows with unknown sex omitted (&lt;0.001%).</p>
+    </div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Pass rate by gender, annual trend</div>
+      <canvas id="ch3-passrate" height="200"></canvas>
+      <p class="chart-note">Pass rate = Division I–IV ÷ students who sat (excluding absent/withheld). Pre-2013 pass rates are not comparable (see Chapter 2 data note).</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>The crossover happened around 2015, the same year the Free Education Policy is documented to have expanded access. <span style="color:#8c7e72">[Inference: whether the policy drove the gender shift requires external evidence]</span></li>
+        <li>By 2025, pass rates differ slightly between boys and girls. Is that gap closing, widening, or stable?</li>
+        <li>Are there regions where the gender crossover happened earlier or later than the national average?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 4: Resilient Schools                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch4">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 4</span>
+    <h2 class="ch-question">Which schools have stayed at the top for 22 years?</h2>
+
+    <div class="ch-intro">
+      <p>Out of 5,864 secondary schools active in 2025, only <strong>50 have appeared in 20 or more consecutive years of data</strong>. Among them, a small group has maintained extraordinary Division I rates, not in one year but consistently, across administrations, across the 2013 inflection, across everything.</p>
+      <p>These are not just top-performers in a single year. They are institutions that have held their standard for two decades.</p>
+    </div>
+
+    <div class="callout-grid reveal" id="ch4-callouts"></div>
+
+    <div class="chart-wrap reveal" id="ch4-table-wrap">
+      <div class="chart-title">Top 20 schools by average Division I rate (20+ years of data)</div>
+      <div id="ch4-table"></div>
+      <p class="chart-note">Sparklines show Division I rate per year across all recorded years. Gaps indicate years without data.</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>Several schools maintained near-perfect Division I rates even through the 2013 national inflection. What made them resilient?</li>
+        <li>Consistency and absolute performance may diverge: a school with 70% Div I every year outranks one with 99% one year and 40% the next. Is that the right way to rank?</li>
+        <li>Are the consistently top schools clustered in specific regions, or distributed nationally?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 5: Regions                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch5">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 5</span>
+    <h2 class="ch-question">Does your region shape your results?</h2>
+
+    <div class="ch-intro">
+      <p>Tanzania has 31 administrative regions, including Zanzibar. Over 22 years, the data shows persistent gaps in Division I rates between regions, gaps that have not closed despite national expansion. This chapter ranks regions by their long-run average Division I rate, then looks at whether the rankings are stable or shifting over time.</p>
+    </div>
+
+    <div class="inference-box reveal">
+      <p class="inf-label">Data note: Zanzibar regions</p>
+      <p>Zanzibar (Pemba and Unguja islands) has its own examination authority (KARSS) and only a small subset of Zanzibar schools appear in this NECTA dataset. Division I rates for Zanzibar regions reflect that limited sample and should not be interpreted as representative of Zanzibar education outcomes overall.</p>
+    </div>
+
+    <div class="callout-grid reveal" id="ch5-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Regions ranked by average Division I rate (all available years)</div>
+      <div id="ch5-league" style="max-height: 520px; overflow-y: auto;"></div>
+      <p class="chart-note">Showing mainland Tanzania regions only. Division I rate = schools' combined Div I students ÷ students who sat.</p>
+    </div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Top 3 mainland regions: Division I rate trend (2003–2025)</div>
+      <canvas id="ch5-trend" height="280"></canvas>
+      <p class="chart-note">Top 3 regions by average Division I rate across all years. * Zanzibar regions and open-centre candidates excluded.</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>The regional gap appears persistent. Are top regions pulling further ahead, or is there convergence?</li>
+        <li>Within underperforming regions, are there individual schools that beat the regional average consistently? (The data has them.)</li>
+        <li>Tanzania's region count grew 2012–2015 as new regions were created. How does boundary change affect historical comparisons?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 6: The Extremes                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch6">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 6</span>
+    <h2 class="ch-question">After 22 years and 8.5mil students: is the gap closing?</h2>
+
+    <div class="ch-intro">
+      <p>The previous chapters told the system story: expansion, the 2013 shift, the gender reversal, resilient schools, regional inequality. This chapter asks the harder question: what does the data look like at the very edges?</p>
+      <p>Three acts. The schools that produced a perfect Division I class. The schools that have struggled persistently. And the individuals who defied their surroundings.</p>
+    </div>
+
+    <!-- Act 1: Perfect classes -->
+    <div class="ch-intro">
+      <strong>Act 1: The perfect class</strong>
+    </div>
+    <div class="ch-intro">
+      <p>Across 22 years and 8.5 million candidates, <strong id="ch6-perfect-count">…</strong> school-years produced a result where every single student passed in Division I (minimum 5 students). These are the data's ceiling moments.</p>
+    </div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Schools that produced an all-Division-I class</div>
+      <div id="ch6-perfect-table"></div>
+      <p class="chart-note">Ranked by class size (largest cohorts first). School years with fewer than 5 students excluded.</p>
+    </div>
+
+    <!-- Act 2: Consistent bottom -->
+    <div class="ch-intro" style="margin-top: 2rem">
+      <strong>Act 2: The persistent floor</strong>
+    </div>
+    <div class="ch-intro">
+      <p>At the other end: <strong id="ch6-bottom-count">…</strong> schools have maintained an average Division 0 rate above 30% over 10 or more years. The framing here is systemic, not individual. These results reflect the conditions these schools operate in, not the character of their students or teachers.</p>
+    </div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Schools with sustained Division 0 rates above 30% (10+ years)</div>
+      <div id="ch6-bottom-table"></div>
+      <p class="chart-note">Average Division 0 rate calculated over all years the school appears in the dataset.</p>
+    </div>
+
+    <!-- Act 3: Needle in haystack -->
+    <div class="ch-intro" style="margin-top: 2rem">
+      <strong>Act 3: The needle</strong>
+    </div>
+    <div class="ch-intro">
+      <p>The most human data points in 8.5 million records: school-years where exactly <strong>one student passed in Division I</strong> while 80% or more of their classmates received Division 0. These candidates are not statistical outliers; they are people who sat in the same classroom and achieved a categorically different result.</p>
+    </div>
+
+    <div class="spotlight-grid reveal" id="ch6-spotlight"></div>
+
+    <!-- Act 4: Perfect score -->
+    <div class="ch-intro" style="margin-top: 2rem">
+      <strong>Act 4: The perfect score</strong>
+    </div>
+    <div class="ch-intro">
+      <p>Division I is subdivided by aggregate score: lower aggregates mean better grades across subjects. An aggregate of 7 (one point per subject across 7 subjects) is the highest performance possible within Division I. In 22 years and 8.5 million candidates, only one school has achieved a class where <strong>every single student</strong> scored aggregate 7.</p>
+    </div>
+    <div class="spotlight-grid reveal" id="ch6-perfect-score"></div>
+
+    <!-- Inequality concentration -->
+    <div class="callout-grid reveal" id="ch6-callouts"></div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>The system grew 9.4× in candidate volume. Did the number of perfect-class school-years grow proportionally, or did scale dilute excellence?</li>
+        <li>The schools at the persistent bottom are real institutions with real students. What resource gap explains 30%+ Division 0 rates sustained over a decade?</li>
+        <li>The needle students passed in schools where almost everyone else failed. What does that suggest about the role of individual factors vs. systemic ones?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 7: School Size                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch7">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 7</span>
+    <h2 class="ch-question">Does class size predict your chances?</h2>
+
+    <div class="ch-intro">
+      <p>NECTA sets a threshold of 40 students for a school to be classified as independently viable. But does being above or below that line correlate with outcomes? Across 22 years, smaller schools (fewer than 40 students sitting) and larger schools track differently on Division I rates. The pattern is not always what you might expect.</p>
+    </div>
+
+    <div class="callout-grid reveal" id="ch7-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Average Division I rate: small vs large schools (2003–2025)</div>
+      <canvas id="ch7-chart" height="260"></canvas>
+      <p class="chart-note">Small = fewer than 40 students sat; large = 40 or more. Average is school-level (each school weighted equally, not by size). * Zanzibar regions and open-centre candidates excluded.</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>Small schools have fewer students, which can inflate or deflate rates with one strong cohort. Is the small-school advantage consistent, or driven by a few elite seminaries?</li>
+        <li>If smaller schools outperform, what does that suggest about the optimal class size for Form 4 outcomes in Tanzania?</li>
+        <li>The 40-student NECTA threshold is administrative. Does the data suggest a different natural breakpoint?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CHAPTER 8: School Type                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch8">
+  <div class="ch-content">
+    <span class="ch-eyebrow">Chapter 8</span>
+    <h2 class="ch-question">Does school type predict outcomes?</h2>
+
+    <div class="ch-intro">
+      <p>Single-sex schools dominated the top of the Chapter 4 ranking. But is that specific to those elite institutions, or is there a broader pattern? Each school in this dataset is classified by its actual student sex distribution across all 22 years: schools where fewer than 2% of students are the minority sex are classified as boys-only or girls-only; all others are coed. This catches seminaries (all-male by enrollment) alongside formally designated single-sex schools.</p>
+    </div>
+
+    <div class="reveal" id="ch8-callouts"></div>
+
+    <div class="chart-wrap reveal">
+      <div class="chart-title">Average Division I rate by school type (2003–2025)</div>
+      <canvas id="ch8-chart" height="260"></canvas>
+      <p class="chart-note">School type derived from historical enrollment sex distribution (2% threshold). Coed line shown for scale; single-sex schools operate at a structurally different level. * Zanzibar regions and open-centre candidates excluded.</p>
+    </div>
+
+    <div class="raises-box reveal">
+      <p class="raises-label">What this raises</p>
+      <ul>
+        <li>The gap between single-sex and coed schools is large. How much of it is explained by the fact that most top-performing schools happen to be single-sex, versus single-sex structure itself driving outcomes?</li>
+        <li>Boys-only and girls-only schools both outperform coed by a wide margin. Does the gap between boys-only and girls-only change over time?</li>
+        <li>Most single-sex schools in this dataset are faith-based boarding schools. Is the variable school type, or boarding, or religious mission, or small class size?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer: What We Haven't Asked Yet ──────────────────── -->
+<footer class="trend-footer">
+  <div class="trend-footer-content">
+    <h3>What we haven't asked yet</h3>
+    <p class="footer-sub">Questions the data could answer, but haven't been explored yet.</p>
+
+    <ul class="open-questions">
+      <li>
+        <p class="q-text">"Do schools that grew fastest also improved most, or did expansion at scale come at a quality cost?"</p>
+        <p class="q-note">Requires: school size × div_I_rate cross-sectional over time</p>
+      </li>
+      <li>
+        <p class="q-text">"Which school has the widest division spread in a single year?"</p>
+        <p class="q-note">Requires: within-school inequality metric (div I and div 0 co-existing)</p>
+      </li>
+      <li>
+        <p class="q-text">"Is there a feeder-school effect? Do certain CSEE schools consistently send students to the same A-level schools?"</p>
+        <p class="q-note">Requires: ACSEE linkage, candidate number matching across datasets (Season 2 preview)</p>
+      </li>
+      <li>
+        <p class="q-text">"Are there regions where the gender reversal happened earlier or later than the national average?"</p>
+        <p class="q-note">Requires: region × gender × year breakdown (the data has it)</p>
+      </li>
+      <li>
+        <p class="q-text">"What does a 'comeback school' look like: a school that bottomed out and recovered?"</p>
+        <p class="q-note">Requires: longitudinal school arc analysis, school_results table</p>
+      </li>
+      <li>
+        <p class="q-text">"If you remove the top 100 schools from the national average, how much does it change?"</p>
+        <p class="q-note">Requires: concentration calculation (the 2025 data is already in this dataset)</p>
+      </li>
+      <li>
+        <p class="q-text">"P-centres are open test-taking venues, not schools. Anyone can register. Most produce below-average Division I rates. But do any P-centres produce consistent clusters of top performers, year after year?"</p>
+        <p class="q-note">Requires: P-prefix school_results aggregated by centre, filtered for centres with 5+ years of data. Season 1.5 preview.</p>
+      </li>
+      <li>
+        <p class="q-text">"In 2025, what percentage of Division I students came from schools that themselves average Division I?"</p>
+        <p class="q-note">Requires: school-level div_I classification × individual student outcomes</p>
+      </li>
+    </ul>
+
+    <p style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#8c7e72;margin-bottom:0.75rem">Season roadmap</p>
+    <div class="season-roadmap">
+      <div class="season-pill active">
+        <span>Season 1 · CSEE</span>
+        <span class="sp-status">This page</span>
+      </div>
+      <div class="season-pill">
+        <span>Season 1.5 · P-Schools</span>
+        <span class="sp-status">Planned</span>
+      </div>
+      <div class="season-pill">
+        <span>Season 2 · ACSEE</span>
+        <span class="sp-status">Planned</span>
+      </div>
+    </div>
+
+    <p style="margin-top:2rem;font-size:0.75rem;color:#b0a594">
+      Data: TETEA archive (2003–2021), NECTA online results (2022–2025). Secondary schools only; open-centre candidates excluded.
+      All candidate numbers and school codes are public NECTA data.
+      Analysis by Geoffrey · <a href="necta-explorer.html" style="color:#8c7e72">NECTA Explorer →</a>
+    </p>
+  </div>
+</footer>
+
+<script src="data/trend/data.js"></script>
+<script src="csee-trend.js"></script>
+</body>
+</html>
