@@ -35,6 +35,6 @@ export const siteConfig = {
   title: 'Geoffrey Rugarabamu | Data Governance & Analytics',
   description: 'I help organizations trust their data and make better decisions with it. Data governance strategist, analytics leader, and cross-functional partner.',
   url: 'https://rugarabamu.me',
-  email: 'geoffrey.rugarabamu@gmail.com',
+  email: 'geoffrey@rugarabamu.me',
   linkedin: 'https://www.linkedin.com/in/geoffreyrugarabamu/',
 };
