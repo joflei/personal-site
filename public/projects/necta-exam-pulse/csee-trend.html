@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <link rel="stylesheet" href="necta-styles.css" />
 
   <style>
@@ -624,7 +625,7 @@
     <h2 class="ch-question">How did 61K students become 570K?</h2>
 
     <div class="ch-intro">
-      <p>In 2003, roughly 61K students sat Tanzania's Form 4 examinations. In 2025, that number was 570K, a <strong>9× expansion</strong> over 22 years. The school count grew in parallel: from 908 schools in 2003 to 5,864 in 2025.</p>
+      <p>In 2003, roughly 61K students sat Tanzania's Form 4 examinations. In 2025, that number was 570K, a <strong>+834% expansion</strong> over 22 years. The school count grew in parallel: from 908 schools in 2003 to 5,864 in 2025.</p>
       <p>This chapter traces the raw growth. The question that follows every other chapter is: did the quality of outcomes scale with the volume?</p>
     </div>
 
@@ -644,7 +645,7 @@
     <div class="raises-box reveal">
       <p class="raises-label">What this raises</p>
       <ul>
-        <li>The school count grew 6.5× but candidate count grew 9.4×; classes are getting larger on average. What does that mean for learning conditions?</li>
+        <li>The school count grew +546% but candidate count grew +834%; classes are getting larger on average. What does that mean for learning conditions?</li>
         <li>Expansion was not steady: there are visible acceleration points. What policy changes drove them?</li>
       </ul>
     </div>
@@ -660,7 +661,7 @@
     <h2 class="ch-question">What changed in 2012?</h2>
 
     <div class="ch-intro">
-      <p>The pass rate did not drop in 2013. It bottomed out in 2012, at <strong>34.5%</strong>, the worst year in the 22-year record. By 2013, it had already recovered to 60.8%. The real story is a collapse driven by rapid expansion from 2008 to 2012, followed by a long, sustained recovery to 94.9% in 2025.</p>
+      <p>Tanzania's pass rate hit its lowest point in 2012: <strong>34.5%</strong>. The school system had tripled in size between 2003 and 2012, adding students faster than teachers and infrastructure could follow. By 2013 the recovery had already begun, and by 2025 the pass rate reached <strong>94.9%</strong>. The data shows a clear collapse and an equally clear, sustained recovery.</p>
     </div>
 
 
@@ -698,6 +699,45 @@
         <li>The recovery has been unbroken for 13 years. Is it structural improvement, or is the exam getting easier?</li>
         <li>Division I rates also improved: from 1.3% in 2012 to 10.2% in 2025. Is the top end genuinely stronger, or just less crowded at the bottom?</li>
       </ul>
+    </div>
+
+    <div class="reveal" style="margin-top:2.5rem;border-top:1px solid #d4c8b8;padding-top:2rem;">
+      <p class="raises-label">What if Division IV wasn't considered passing?</p>
+      <p class="ch-intro" style="margin:0 0 1.5rem;font-size:0.9rem;color:#5a4e44;line-height:1.65;max-width:680px;">
+        NECTA classifies Division IV as a passing grade. Excluding it does not change the direction of the story, but it reveals a quality dimension hidden inside the headline number.
+      </p>
+
+      <div class="callout-grid" id="ch2-div4-snap" style="margin-bottom:1rem;"></div>
+
+      <div class="chart-wrap" style="margin-bottom:1.5rem;">
+        <div class="chart-title">Pass rate by metric, 2003–2025</div>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+          <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:#5a4e44;">
+            <svg width="24" height="3"><rect width="24" height="3" rx="1.5" fill="#d97757"/></svg>All passes (Div I–IV)
+          </span>
+          <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:#5a4e44;">
+            <svg width="24" height="3"><rect width="24" height="3" rx="1.5" fill="#2c2418"/></svg>Quality passes (Div I–III only)
+          </span>
+        </div>
+        <canvas id="ch2-div4-chart" height="240"></canvas>
+      </div>
+
+      <p class="raises-label" style="margin-bottom:0.75rem;">22-year averages (2003–2025)</p>
+      <div class="callout-grid" id="ch2-div4-avg" style="margin-bottom:0.75rem;"></div>
+      <p id="ch2-div4-avg-note" style="font-size:0.8125rem;color:#5a4e44;line-height:1.55;margin:0 0 1.5rem;padding:0.75rem 1rem;background:#f7f2ec;border-left:3px solid #d4c8b8;border-radius:0 4px 4px 0;"></p>
+
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin-bottom:0.5rem;">
+        <thead>
+          <tr>
+            <th style="text-align:left;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8c7e72;border-bottom:1px solid #d4c8b8;padding:0.4rem 0.75rem 0.5rem;">Year</th>
+            <th style="text-align:right;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8c7e72;border-bottom:1px solid #d4c8b8;padding:0.4rem 0.75rem 0.5rem;">Div I–IV rate</th>
+            <th style="text-align:right;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8c7e72;border-bottom:1px solid #d4c8b8;padding:0.4rem 0.75rem 0.5rem;">Div I–III rate</th>
+            <th style="text-align:right;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8c7e72;border-bottom:1px solid #d4c8b8;padding:0.4rem 0.75rem 0.5rem;">Div IV share</th>
+            <th style="text-align:left;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8c7e72;border-bottom:1px solid #d4c8b8;padding:0.4rem 0.75rem 0.5rem;">Context</th>
+          </tr>
+        </thead>
+        <tbody id="ch2-div4-table"></tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -756,7 +796,7 @@
     <div class="callout-grid reveal" id="ch4-callouts"></div>
 
     <div class="chart-wrap reveal" id="ch4-table-wrap">
-      <div class="chart-title">Top 20 schools by average Division I rate (20+ years of data)</div>
+      <div class="chart-title">Top 10 schools by average Division I rate (20+ years of data)</div>
       <div id="ch4-table"></div>
       <p class="chart-note">Sparklines show Division I rate per year across all recorded years. Gaps indicate years without data.</p>
     </div>
@@ -797,10 +837,13 @@
       <p class="chart-note">Showing mainland Tanzania regions only. Division I rate = schools' combined Div I students ÷ students who sat.</p>
     </div>
 
-    <div class="chart-wrap reveal">
-      <div class="chart-title">Top 3 mainland regions: Division I rate trend (2003–2025)</div>
-      <canvas id="ch5-trend" height="280"></canvas>
-      <p class="chart-note">Top 3 regions by average Division I rate across all years. * Zanzibar regions and open-centre candidates excluded.</p>
+    <div class="chart-wrap reveal" id="ch5-map-wrap">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+        <div class="chart-title" style="margin:0;flex:1;">Pass rate by region (Div I–IV)</div>
+        <select id="ch5-year" style="font-family:inherit;font-size:0.8125rem;padding:0.25rem 0.5rem;border:1px solid #d4c8b8;border-radius:4px;background:#faf6f1;color:#2c2418;cursor:pointer;"></select>
+      </div>
+      <div id="ch5-map" style="position:relative;width:100%;"></div>
+      <p class="chart-note">Mainland Tanzania only. Color: overall pass rate (Div I–IV) for enrolled schools. Hover for region detail.</p>
     </div>
 
     <div class="raises-box reveal">
@@ -875,6 +918,12 @@
     <div class="spotlight-grid reveal" id="ch6-perfect-score"></div>
 
     <!-- Inequality concentration -->
+    <div class="ch-intro" style="margin-top: 2rem">
+      <strong>5. How concentrated is Division I?</strong>
+    </div>
+    <div class="ch-intro">
+      <p>A small number of schools produce a disproportionate share of Division I results. These numbers show how concentrated top performance is in 2025, and how much the national Div I rate has improved since the 2012 trough.</p>
+    </div>
     <div class="callout-grid reveal" id="ch6-callouts"></div>
 
     <div class="raises-box reveal">
@@ -958,36 +1007,34 @@
 
     <ul class="open-questions">
       <li>
+        <p class="q-text">"Does the subject you study shape your chances of passing? How do pass rates differ across STEM subjects (Mathematics, Physics, Chemistry, Biology), Languages (English, Kiswahili), Social Sciences, and Compulsory classes — and has that gap shifted over the 22-year period as the system expanded?"</p>
+      </li>
+      <li>
+        <p class="q-text">"Do government-designated gifted schools — which admit students with the highest PSLE scores — actually outperform comparable top schools over time, or does selective admission alone explain the result? Is the Division I advantage real, or just a reflection of who walks in?"</p>
+      </li>
+      <li>
         <p class="q-text">"Do schools that grew fastest also improved most, or did expansion at scale come at a quality cost?"</p>
-        <p class="q-note">Requires: school size × div_I_rate cross-sectional over time</p>
       </li>
       <li>
         <p class="q-text">"Which school has the widest division spread in a single year?"</p>
-        <p class="q-note">Requires: within-school inequality metric (div I and div 0 co-existing)</p>
       </li>
       <li>
         <p class="q-text">"Is there a feeder-school effect? Do certain CSEE schools consistently send students to the same A-level schools?"</p>
-        <p class="q-note">Requires: ACSEE linkage, candidate number matching across datasets (Part 2 preview)</p>
       </li>
       <li>
         <p class="q-text">"Are there regions where the gender reversal happened earlier or later than the national average?"</p>
-        <p class="q-note">Requires: region × gender × year breakdown (the data has it)</p>
       </li>
       <li>
         <p class="q-text">"What does a 'comeback school' look like: a school that bottomed out and recovered?"</p>
-        <p class="q-note">Requires: longitudinal school arc analysis, school_results table</p>
       </li>
       <li>
         <p class="q-text">"If you remove the top 100 schools from the national average, how much does it change?"</p>
-        <p class="q-note">Requires: concentration calculation (the 2025 data is already in this dataset)</p>
       </li>
       <li>
         <p class="q-text">"P-centres are open test-taking venues, not schools. Anyone can register. Most produce below-average Division I rates. But do any P-centres produce consistent clusters of top performers, year after year?"</p>
-        <p class="q-note">Requires: P-prefix school_results aggregated by centre, filtered for centres with 5+ years of data. Part 1.5 preview.</p>
       </li>
       <li>
         <p class="q-text">"In 2025, what percentage of Division I students came from schools that themselves average Division I?"</p>
-        <p class="q-note">Requires: school-level div_I classification × individual student outcomes</p>
       </li>
     </ul>
 
@@ -1016,6 +1063,7 @@
 </footer>
 
 <script src="data/trend/data.js"></script>
+<script src="data/geo/tanzania.js"></script>
 <script src="csee-trend.js"></script>
 </body>
 </html>
