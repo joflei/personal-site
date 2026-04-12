@@ -43,7 +43,9 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)\\)\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\" \"https://joflei.github.io/personal-site/necta/data/schools_full.json\")",
       "Bash(python3 -c \":*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "WebFetch(domain:rugarabamu.me)",
+      "WebFetch(domain:localhost)"
     ]
   }
 }
