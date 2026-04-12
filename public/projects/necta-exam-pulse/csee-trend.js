@@ -979,10 +979,10 @@ function buildCh6() {
             <div class="sp-school">ST. FRANCIS GIRLS' SECONDARY SCHOOL</div>
             <div class="sp-region">Mbeya &nbsp;·&nbsp; 2024</div>
             <div class="sp-stat">
-                <strong>91</strong> students sat the exam.<br>
+                <strong>91</strong> students sat.<br>
                 <strong>91</strong> scored Division I.<br>
-                <strong>91</strong> scored aggregate 7, the highest possible grade in every subject.<br>
-                The only time this has occurred in 22 years of data.
+                <strong>91</strong> scored aggregate 7 — Grade A in every one of their seven subjects. Not a single grade below.<br>
+                The only time this has happened in 22 years of data across 8.5 million candidates.
             </div>
         `;
         psEl.appendChild(card);
