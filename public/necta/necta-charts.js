@@ -46,7 +46,7 @@ async function loadData() {
         fetch('data/subject_analysis.json').then(r => r.json()),
         fetch('data/extended_analysis.json').then(r => r.json()),
     ]);
-    return { national, schools, subjects: subjectData, extended };
+    return { national, schools, subjects: subjectData, extended, ch5_regions: window.CH5_REGIONS };
 }
 
 // ─── Helpers ────────────────────────────────────────────────
@@ -79,13 +79,29 @@ function destroyChart(name) {
 // ─── Hero ───────────────────────────────────────────────────
 
 function renderHeroStats(summary) {
-    document.getElementById('stat-students').textContent = fmt(summary.total_students);
+    // Pass rate (Div I-IV)
+    document.getElementById('stat-pass').textContent = whole(summary.pass_rate);
+
+    // Quality pass rate (Div I-III)
     const divs = summary.divisions;
     const qualityRate = (divs['I'] + divs['II'] + divs['III']) / summary.total_students;
     document.getElementById('stat-quality').textContent = whole(qualityRate);
-    const gap = summary.gender_gap;
-    const gapPts = Math.abs(gap.male_pass_rate - gap.female_pass_rate) * 100;
-    document.getElementById('stat-gap').textContent = Math.round(gapPts) + 'pp';
+
+    // YoY annotations vs 2024
+    const prior = DATA.national.prior_year[currentFilter];
+    function yoyLabel(current, prev) {
+        const delta = Math.round((current - prev) * 1000) / 10; // one decimal pp
+        const sign = delta >= 0 ? '+' : '';
+        const arrow = delta >= 0 ? '\u2191' : '\u2193';
+        return `(${arrow} ${sign}${delta}pp yoy)`;
+    }
+    document.getElementById('stat-pass-yoy').textContent =
+        prior ? yoyLabel(summary.pass_rate, prior.pass_rate) : '';
+    document.getElementById('stat-quality-yoy').textContent =
+        prior ? yoyLabel(qualityRate, prior.quality_rate) : '';
+
+    // Hero note: student count + centre count
+    document.getElementById('stat-students').textContent = fmt(summary.total_students);
     document.getElementById('sample-count').textContent = fmt(summary.total_schools);
     const hints = { school: 'Showing active schools (S-prefix)', private: 'Showing private centres (P-prefix)', all: 'Showing all centres' };
     document.getElementById('filter-hint').textContent = hints[currentFilter];
@@ -172,8 +188,8 @@ function renderDiv4Narrative() {
 
     document.getElementById('insight-div4').innerHTML =
         `The gap between Division III and Division IV is the difference between a <strong>${whole(d.without_div4_rate)}</strong> ` +
-        `and <strong>${whole(d.current_pass_rate)}</strong> national pass rate. That single boundary ` +
-        `determines whether Tanzania's education story is one of success or crisis.`;
+        `and <strong>${whole(d.current_pass_rate)}</strong> national pass rate. Does that single boundary ` +
+        `determine whether this is a story of progress or a story of grade inflation?`;
 }
 
 // ─── Chart 3: Gender (100% stacked horizontal bars) ─────────
@@ -275,12 +291,29 @@ function renderGenderChart() {
         if (gap > maxGap) { maxGap = gap; maxCat = g.category; }
     });
     const bm = gbc.find(g => g.category === 'Basic Maths');
+
+    // cGPI: Composite Gender Parity Index (extends UNESCO SDG 4.5.1)
+    // Uses schools-filter gender data from national_summary (filter-independent, shown as context)
+    const ggSchools = DATA.national.by_centre_type.school.gender_gap;
+    const gpiParticipation = ggSchools.female_total / ggSchools.male_total;
+    const gpiOutcome = ggSchools.female_pass_rate / ggSchools.male_pass_rate;
+    const cgpi = Math.round(gpiParticipation * gpiOutcome * 100);
+    const partPct = Math.round(gpiParticipation * 100);
+    const outcomePct = Math.round(gpiOutcome * 100);
+
     document.getElementById('insight-gender').innerHTML =
         `<strong>${maxCat}</strong> has the widest gender gap at <strong>${Math.round(maxGap)}pp</strong>. ` +
-        `In Basic Maths, <strong>${whole(bm.male_rate)}</strong> of boys pass vs ` +
-        `<strong>${whole(bm.female_rate)}</strong> of girls. ` +
+        `In Basic Maths, <strong>${whole(bm.male_rate)}</strong> of male students pass vs ` +
+        `<strong>${whole(bm.female_rate)}</strong> of female students. ` +
         `Bar widths show each gender's share of passing students. ` +
-        `The more uneven the split, the larger the gap.`;
+        `The more uneven the split, the larger the gap.` +
+        `<br><br>` +
+        `Zooming out: female students are <strong>${partPct - 100}%</strong> more represented in exam centres than male students ` +
+        `(participation parity: ${partPct}), yet pass at a <strong>${100 - outcomePct}pp</strong> lower rate ` +
+        `(outcome parity: ${outcomePct}). Combining both dimensions using the Composite Gender Parity Index ` +
+        `(an extension of UNESCO SDG&nbsp;4.5.1) gives a cGPI of <strong>${cgpi}</strong>: ` +
+        `female students are <strong>${cgpi - 100}%</strong> more likely to be in the passer pool than male students. ` +
+        `Does high participation mask lower per-student quality access, or does it signal a structural shift in who shows up to sit the exam?`;
 }
 
 // ─── Chart 4: School Types ──────────────────────────────────
@@ -430,8 +463,8 @@ function renderOwnership(allSchools) {
         `Mission and religious schools produce <strong>${misDiv1Pct}%</strong> Division I students, ` +
         `compared to <strong>${govDiv1Pct}%</strong> at government schools, a <strong>${ratio}×</strong> difference. ` +
         `Pass rates are similar across all types; the gap is in the <em>quality</em> of passes. ` +
-        `${Math.round(m.schools / (m.schools + g.schools + groups['Private Commercial'].schools) * 100)}% of schools are mission/religious, ` +
-        `yet they account for a disproportionate share of top results. ` +
+        `${Math.round(m.schools / (m.schools + g.schools + groups['Private Commercial'].schools) * 100)}% of schools are mission/religious: ` +
+        `what explains the ${ratio}× Division I gap that pass rates alone do not show? ` +
         `<em>Classification is name-based (Seminary, Loreto, Lutheran, Academy, etc.) and not from an official registry.</em>`;
 }
 
@@ -486,11 +519,11 @@ function renderChampions(schools) {
     container.innerHTML = html;
 
     const perfect = top10.filter(c => c.pass_rate === 1).length;
-    let insight = `Top small schools hold their own against much larger ones.`;
-    if (perfect > 0) insight += ` <strong>${perfect}</strong> of the top 10 have a perfect 100% pass rate.`;
+    let insight = `How do schools with fewer than 40 students compete with schools ten times their size?`;
+    if (perfect > 0) insight += ` <strong>${perfect}</strong> of the top 10 posted a perfect 100% pass rate.`;
     if (anomalies.length > 0) {
-        insight += ` On the other end, <strong>${anomalies.length}</strong> very small schools (&lt;15 students) have pass rates below 70%. ` +
-            `Schools this small rarely have the staff depth to cover all subjects well.`;
+        insight += ` At the other end, <strong>${anomalies.length}</strong> very small schools (&lt;15 students) have pass rates below 70%. ` +
+            `What separates the top performers from the struggling ones at the same scale?`;
     }
     document.getElementById('insight-champions').innerHTML = insight;
 }
@@ -541,9 +574,9 @@ function renderSubjectGroups(subjectData) {
     if (allSorted.length > 0) {
         const h = allSorted[0], e = allSorted[allSorted.length - 1];
         document.getElementById('insight-subjects').innerHTML =
-            `<strong>${h.name}</strong> is the most challenging at <strong>${whole(h.pass_rate)}</strong> pass rate, ` +
+            `<strong>${h.name}</strong> has the lowest pass rate at <strong>${whole(h.pass_rate)}</strong>, ` +
             `while <strong>${e.name}</strong> leads at <strong>${whole(e.pass_rate)}</strong>. ` +
-            `Basic Mathematics stands out as a major bottleneck.`;
+            `Is Basic Mathematics a teaching gap, a curriculum problem, or simply the hardest subject to learn at scale?`;
     }
 }
 
@@ -568,86 +601,146 @@ function renderSTEM() {
         </div>
     </div>`;
     document.getElementById('insight-stem').innerHTML =
-        `Students at schools that offer Add Math score better in Basic Math, though whether it's the curriculum or the students is hard to separate. ` +
-        `These ${am.schools_with_addmath} schools may recruit stronger math teachers or draw more motivated students.`;
+        `Students at schools that offer Add Math score nearly double the national average in Basic Math. ` +
+        `Is that the curriculum, the teachers, or the students who self-select into those schools?`;
 }
 
 // ─── Section 8: Regional ────────────────────────────────────
 
 function renderRegions() {
-    destroyChart('regions');
-    const regions = DATA.extended.regions;
+    const regions = window.TZ_REGIONS_2025;
+    const container = document.getElementById('regions-map-container');
 
-    // Check if we have named regions (from collecting individual school pages)
-    if (!DATA.extended.region_names || Object.keys(DATA.extended.region_names).length === 0) {
-        // No region mapping available — show placeholder
-        const canvas = document.getElementById('chart-regions');
-        canvas.style.display = 'none';
-        const parent = canvas.parentElement;
-        parent.innerHTML = `
-            <div style="text-align:center;padding:2rem 1rem;border:1px dashed ${C.border};border-radius:6px;background:${C.sandDark};">
-                <p style="font-size:1.125rem;font-weight:600;color:${C.espresso};margin-bottom:0.75rem;">Region Data Unavailable</p>
-                <p style="font-size:0.875rem;color:${C.warmGray};max-width:480px;margin:0 auto;line-height:1.7;">
-                    NECTA school codes are sequential and don't encode geographic location.
-                    Region names are only available on each school's individual results page.
-                    A future update will pull this data to enable regional comparisons.
-                </p>
-            </div>`;
-        document.getElementById('insight-regions').innerHTML =
-            `Regional breakdowns require pulling data from ~6,700 individual school pages. Planned for a future update.`;
+    if (!regions || !regions.length) {
+        container.innerHTML = `<p style="padding:2rem;color:#8c7e72;">Regional map data unavailable.</p>`;
         return;
     }
 
-    // If we have region names, render the chart
-    const ctx = document.getElementById('chart-regions').getContext('2d');
-    const bottom = regions.slice(0, 10);
-    const top = regions.slice(-10).reverse();
-    const display = [...bottom, ...top];
+    // ── Color interpolation (no D3 needed) ──────────────────────────────────
+    // OrRd palette: #fff7ec → #fc8d59 → #7f0000
+    function lerpColor(c1, c2, t) {
+        const h = s => parseInt(s, 16);
+        const r = Math.round(h(c1.slice(1,3)) * (1-t) + h(c2.slice(1,3)) * t);
+        const g = Math.round(h(c1.slice(3,5)) * (1-t) + h(c2.slice(3,5)) * t);
+        const b = Math.round(h(c1.slice(5,7)) * (1-t) + h(c2.slice(5,7)) * t);
+        return `rgb(${r},${g},${b})`;
+    }
+    function metricColor(val, lo, hi) {
+        const t = Math.max(0, Math.min(1, (val - lo) / (hi - lo)));
+        if (t < 0.5) return lerpColor('#fff7ec', '#fc8d59', t * 2);
+        return lerpColor('#fc8d59', '#7f0000', (t - 0.5) * 2);
+    }
 
-    const labels = display.map(r => DATA.extended.region_names[r.code] || `Code ${r.code}`);
-    const rates = display.map(r => r.avg_pass_rate * 100);
-    const colors = display.map((_, i) => i < 10 ? C.claude : C.olive);
+    const METRIC_KEY = { div1_rate: 'div1', div1_3_rate: 'div13', pass_rate: 'pass_' };
+    const METRIC_LABELS = {
+        div1_rate: 'Division I Rate',
+        div1_3_rate: 'Quality Pass (Div I\u2013III)',
+        pass_rate: 'Pass Rate (Div I\u2013IV)',
+    };
 
-    charts.regions = new Chart(ctx, {
-        type: 'bar',
-        data: { labels, datasets: [{ data: rates, backgroundColor: colors, borderWidth: 0, borderRadius: 2 }] },
-        options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-            plugins: {
-                tooltip: { callbacks: { label: (c) => {
-                    const r = display[c.dataIndex];
-                    return `${Math.round(c.raw)}% avg (${r.schools} schools, ${fmt(r.students)} students)`;
-                }}},
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { display: false } },
-                y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-            },
-        },
-        plugins: [{
-            id: 'inlineLabels',
-            afterDatasetsDraw(chart) {
-                const { ctx: c } = chart;
-                chart.getDatasetMeta(0).data.forEach((bar, i) => {
-                    const val = Math.round(rates[i]) + '%';
-                    c.save();
-                    c.fillStyle = '#fff';
-                    c.font = 'bold 11px "DM Sans"';
-                    c.textAlign = 'right';
-                    c.textBaseline = 'middle';
-                    c.fillText(val, bar.x - 6, bar.y);
-                    c.restore();
-                });
-            },
-        }],
+    let currentMetric = 'div1_rate';
+
+    // ── Build SVG ─────────────────────────────────────────────────────────────
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 700 720');
+    svg.setAttribute('width', '100%');
+    svg.style.display = 'block';
+
+    // Tooltip
+    const tip = document.createElement('div');
+    Object.assign(tip.style, {
+        position: 'absolute', pointerEvents: 'none', background: '#2c2418',
+        color: '#faf6f1', fontSize: '0.75rem', lineHeight: '1.5',
+        padding: '0.35rem 0.65rem', borderRadius: '3px',
+        opacity: '0', whiteSpace: 'nowrap', transition: 'opacity 0.1s',
     });
-    document.getElementById('chart-regions').parentElement.style.height = (display.length * 30 + 40) + 'px';
+    container.appendChild(svg);
+    container.appendChild(tip);
 
-    const worst = regions[0], best = regions[regions.length - 1];
-    const spread = Math.round((best.avg_pass_rate - worst.avg_pass_rate) * 100);
-    document.getElementById('insight-regions').innerHTML =
-        `The spread between highest and lowest regions is <strong>${spread}pp</strong>. ` +
-        `Top- and bottom-performing regions are shown above.`;
+    // Draw paths
+    const pathEls = regions.map(r => {
+        const el = document.createElementNS(NS, 'path');
+        el.setAttribute('d', r.d);
+        el.setAttribute('stroke', '#c8bfb2');
+        el.setAttribute('stroke-width', '0.8');
+        el.setAttribute('fill', '#e8e0d6');
+        el.style.cursor = 'default';
+
+        el.addEventListener('mousemove', e => {
+            const rect = container.getBoundingClientRect();
+            tip.style.opacity = '1';
+            tip.style.left = (e.clientX - rect.left + 12) + 'px';
+            tip.style.top  = (e.clientY - rect.top  - 10) + 'px';
+            tip.innerHTML =
+                `<strong>${r.name}</strong><br>` +
+                `Div I Rate: ${(r.div1 * 100).toFixed(1)}%<br>` +
+                `Quality Pass (I\u2013III): ${(r.div13 * 100).toFixed(1)}%<br>` +
+                `Pass Rate (I\u2013IV): ${(r.pass_ * 100).toFixed(1)}%<br>` +
+                `Schools: ${r.schools.toLocaleString()}<br>` +
+                `Candidates: ${r.candidates.toLocaleString()}`;
+            el.setAttribute('stroke', '#2c2418');
+            el.setAttribute('stroke-width', '1.5');
+        });
+        el.addEventListener('mouseleave', () => {
+            tip.style.opacity = '0';
+            el.setAttribute('stroke', '#c8bfb2');
+            el.setAttribute('stroke-width', '0.8');
+        });
+
+        svg.appendChild(el);
+        return { el, r };
+    });
+
+    // ── Legend ────────────────────────────────────────────────────────────────
+    const legendDiv = document.createElement('div');
+    legendDiv.style.cssText = 'display:flex;align-items:center;gap:6px;margin-top:0.5rem;font-size:0.625rem;color:#8c7e72;';
+    const gradBar = document.createElement('div');
+    gradBar.style.cssText = 'width:160px;height:8px;border-radius:2px;background:linear-gradient(to right,#fff7ec,#fc8d59,#7f0000);flex-shrink:0;';
+    const legendLabelEl = document.createElement('span');
+    legendLabelEl.textContent = 'Division I Rate, 2025';
+    legendDiv.innerHTML = '<span>Lower</span>';
+    legendDiv.appendChild(gradBar);
+    legendDiv.appendChild(document.createTextNode(' Higher \u2014 '));
+    legendDiv.appendChild(legendLabelEl);
+    container.appendChild(legendDiv);
+
+    // ── Color regions ─────────────────────────────────────────────────────────
+    function applyColors(metric) {
+        const key = METRIC_KEY[metric];
+        const vals = regions.map(r => r[key]).filter(v => v > 0);
+        const lo = Math.min(...vals), hi = Math.max(...vals);
+        pathEls.forEach(({ el, r }) => {
+            const v = r[key];
+            el.setAttribute('fill', v > 0 ? metricColor(v, lo, hi) : '#e8e0d6');
+        });
+        legendLabelEl.textContent = METRIC_LABELS[metric] + ', 2025';
+        updateInsight(metric);
+    }
+
+    function updateInsight(metric) {
+        const key = METRIC_KEY[metric];
+        const sorted = [...regions].sort((a, b) => a[key] - b[key]);
+        const worst = sorted[0], best = sorted[sorted.length - 1];
+        const spread = ((best[key] - worst[key]) * 100).toFixed(1);
+        document.getElementById('insight-regions').innerHTML =
+            `${best.name} leads at <strong>${(best[key] * 100).toFixed(1)}%</strong> ${METRIC_LABELS[metric].toLowerCase()}; ` +
+            `${worst.name} trails at <strong>${(worst[key] * 100).toFixed(1)}%</strong>, ` +
+            `a <strong>${spread}pp</strong> gap across 26 mainland regions.`;
+    }
+
+    window.setRegionsMetric = function(metric) {
+        currentMetric = metric;
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        const btnId = { div1_rate: 'regions-metric-div1', div1_3_rate: 'regions-metric-q', pass_rate: 'regions-metric-pass' }[metric];
+        if (btnId) document.getElementById(btnId).classList.add('active');
+        applyColors(metric);
+    };
+
+    applyColors(currentMetric);
+
+    document.getElementById('map-note').textContent =
+        'Source: NECTA 2025 CSEE. Zanzibar excluded (separate exam authority). Hover regions for detail.';
 }
 
 // ─── Section 9: Anomalies ───────────────────────────────────
@@ -780,7 +873,7 @@ function renderDistribution(schools) {
     const container = document.getElementById('top1-container');
     function getTop1(list, label) {
         const sorted = [...list].sort((a, b) => qualityScore(b) - qualityScore(a) || b.total_students - a.total_students);
-        const cutoff = Math.max(1, Math.ceil(list.length * 0.01));
+        const cutoff = Math.min(10, Math.max(1, Math.ceil(list.length * 0.01)));
         const top = sorted.slice(0, cutoff);
         return { top, cutoff, total: list.length, label };
     }
@@ -792,16 +885,16 @@ function renderDistribution(schools) {
     [regTop, smallTop].forEach(g => {
         if (g.top.length === 0) return;
         html += `<h4 style="margin-top:1.5rem;font-size:0.9375rem;color:${C.espresso};">
-            Top 1%: ${g.label} <span style="color:${C.warmGray};font-weight:400;">(${g.cutoff} of ${fmt(g.total)})</span></h4>`;
+            Top ${g.cutoff}: ${g.label} <span style="color:${C.warmGray};font-weight:400;">(of ${fmt(g.total)})</span></h4>`;
         html += `<table class="champions-table" style="margin-top:0.5rem">
-            <thead><tr><th>#</th><th>School</th><th>Students</th><th>Quality</th><th>Pass Rate</th></tr></thead><tbody>`;
+            <thead><tr><th>#</th><th>School</th><th>Students</th><th>Div I</th><th>Pass Rate</th></tr></thead><tbody>`;
         g.top.forEach((s, i) => {
             const rc = i < 3 ? `rank-${i + 1}` : 'rank-default';
-            const qs = qualityScore(s).toFixed(2);
+            const div1Rate = s.total_students > 0 ? whole(s.div_1 / s.total_students) : '—';
             html += `<tr><td><span class="rank-badge ${rc}">${i + 1}</span></td>
                 <td><span class="school-name">${s.name}</span><span class="school-code">${s.code}</span></td>
                 <td>${s.total_students}</td>
-                <td>${qs}</td>
+                <td>${div1Rate}</td>
                 <td><strong>${whole(s.pass_rate)}</strong></td></tr>`;
         });
         html += '</tbody></table>';
@@ -815,7 +908,7 @@ function renderDistribution(schools) {
     if (smallMedian) {
         insight += ` Small schools have a wider spread, with a median of <strong>${whole(smallMedian.pass_rate)}</strong>.`;
     }
-    insight += ` The distribution shows where schools cluster and the long tail at both extremes.`;
+    insight += ` The distribution shows where most schools cluster and how wide the spread is at both ends.`;
     document.getElementById('insight-distribution').innerHTML = insight;
 }
 
@@ -899,7 +992,7 @@ function showSchoolCard(school, sorted, scopedSchools) {
 
     const typeLabel = school.centre_type === 'private' ? ' (Private Centre)' : '';
     const isSmall = school.total_students <= SMALL_THRESHOLD && school.total_students > 0;
-    document.getElementById('card-name').textContent = `${school.code} — ${school.name}${typeLabel}`;
+    document.getElementById('card-name').textContent = `${school.code}: ${school.name}${typeLabel}`;
 
     const sizeNote = isSmall
         ? `Small School (≤${SMALL_THRESHOLD} students), ranked separately per NECTA guidelines`

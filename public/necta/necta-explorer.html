@@ -9,6 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="necta-styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data/geo/tz-map.js"></script>
+    <script src="data/trend/ch5_regions.js"></script>
+    <style>
+        .toggle-btn {
+            padding: 0.3rem 0.75rem; font-size: 0.8rem; border-radius: 4px;
+            border: 1px solid #d4c8b8; background: #faf6f1; color: #8c7e72;
+            cursor: pointer; margin-right: 0.4rem; font-family: "DM Sans", sans-serif;
+        }
+        .toggle-btn.active { background: #d97757; color: #fff; border-color: #d97757; }
+        .stat-yoy { font-size: 0.8rem; font-weight: 500; color: #8c7e72; white-space: nowrap; }
+    </style>
 </head>
 <body>
 
@@ -27,16 +38,18 @@
             <p class="hero-subtitle">The State of Form 4 Education in Tanzania</p>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-number" id="stat-students">—</span>
-                    <span class="stat-label">Students Sat</span>
+                    <div style="display:flex;align-items:baseline;gap:0.4rem;justify-content:center;">
+                        <span class="stat-number" id="stat-pass">—</span>
+                        <span class="stat-yoy" id="stat-pass-yoy"></span>
+                    </div>
+                    <span class="stat-label">National Pass Rate (Div I&#8211;IV)</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number accent" id="stat-quality">—</span>
-                    <span class="stat-label">Div I–III Rate</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" id="stat-gap">—</span>
-                    <span class="stat-label">Gender Gap</span>
+                    <div style="display:flex;align-items:baseline;gap:0.4rem;justify-content:center;">
+                        <span class="stat-number accent" id="stat-quality">—</span>
+                        <span class="stat-yoy" id="stat-quality-yoy"></span>
+                    </div>
+                    <span class="stat-label">Quality Pass Rate (Div I&#8211;III)</span>
                 </div>
             </div>
             <div class="filter-toggle" id="filter-toggle">
@@ -45,6 +58,7 @@
                 <button class="filter-btn" data-filter="private">Private Only</button>
             </div>
             <p class="hero-note">
+                <span id="stat-students">—</span> students &middot;
                 <span id="sample-count">—</span> centres &middot;
                 <span class="filter-hint" id="filter-hint">Showing active schools (S-prefix)</span>
                 &middot; <a href="#methodology">Methodology</a>
@@ -93,7 +107,7 @@
             <div class="section-content">
                 <span class="section-number">04</span>
                 <h2>Does School Type Matter?</h2>
-                <p class="section-question">All-boys, all-girls, coed, and religious schools compared</p>
+                <p class="section-question">Single-sex, coed, and religious schools compared</p>
                 <div class="chart-container">
                     <canvas id="chart-school-types"></canvas>
                 </div>
@@ -146,10 +160,16 @@
             <div class="section-content">
                 <span class="section-number">08</span>
                 <h2>Regional Landscape</h2>
-                <p class="section-question">Performance across Tanzania's districts</p>
-                <div class="chart-container chart-container-wide">
-                    <canvas id="chart-regions"></canvas>
+                <p class="section-question">Performance across Tanzania's 26 mainland regions, 2025</p>
+                <div style="margin-bottom:0.75rem;">
+                    <button id="regions-metric-div1" class="toggle-btn active" onclick="setRegionsMetric('div1_rate')">Division I Rate</button>
+                    <button id="regions-metric-q" class="toggle-btn" onclick="setRegionsMetric('div1_3_rate')">Quality Pass (Div I&#8211;III)</button>
+                    <button id="regions-metric-pass" class="toggle-btn" onclick="setRegionsMetric('pass_rate')">Pass Rate (Div I&#8211;IV)</button>
                 </div>
+                <div class="chart-container chart-container-wide">
+                    <div id="regions-map-container" style="position:relative;width:100%;background:#faf6f1;border-radius:6px;"></div>
+                </div>
+                <p class="chart-note" id="map-note" style="font-size:0.75rem;color:#8c7e72;margin-top:0.5rem;"></p>
                 <p class="insight" id="insight-regions"></p>
             </div>
         </section>
@@ -247,6 +267,6 @@
         </div>
     </footer>
 
-    <script src="necta-charts.js?v=20260328g"></script>
+    <script src="necta-charts.js?v=20260413a"></script>
 </body>
 </html>

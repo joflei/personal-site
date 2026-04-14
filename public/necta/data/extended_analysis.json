@@ -1,95 +1,610 @@
 {
-  "div4_narrative": {
-    "div4_count": 286298,
-    "div4_pct": 0.4952,
-    "current_pass_rate": 0.9415,
-    "without_div4_rate": 0.4463,
-    "drop_pp": 49.5,
-    "schools_would_flip": 4209,
-    "schools_would_flip_pct": 0.6304
-  },
   "gender_by_category": [
     {
-      "category": "Compulsory",
-      "male_rate": 0.9506,
-      "female_rate": 0.9336,
-      "male_total": 242276,
-      "female_total": 278028
-    },
-    {
-      "category": "STEM",
-      "male_rate": 0.9606,
-      "female_rate": 0.9236,
-      "male_total": 242276,
-      "female_total": 278028
-    },
-    {
-      "category": "Languages",
-      "male_rate": 0.9456,
-      "female_rate": 0.9436,
-      "male_total": 242276,
-      "female_total": 278028
-    },
-    {
-      "category": "Social Studies",
-      "male_rate": 0.9506,
-      "female_rate": 0.9336,
-      "male_total": 242276,
-      "female_total": 278028
-    },
-    {
-      "category": "Business & Commerce",
-      "male_rate": 0.9506,
-      "female_rate": 0.9336,
-      "male_total": 242276,
-      "female_total": 278028
+      "category": "Overall",
+      "male_rate": 0.952,
+      "female_rate": 0.9357,
+      "male_total": 276899,
+      "female_total": 318909
     },
     {
       "category": "Basic Maths",
-      "male_rate": 0.2857,
-      "female_rate": 0.2257,
-      "male_total": 267479,
-      "female_total": 313997
+      "male_rate": 0.3094,
+      "female_rate": 0.2088,
+      "male_total": 271143,
+      "female_total": 310334
+    },
+    {
+      "category": "STEM",
+      "male_rate": 0.595,
+      "female_rate": 0.4885,
+      "male_total": 714837,
+      "female_total": 776509
+    },
+    {
+      "category": "Languages",
+      "male_rate": 0.8764,
+      "female_rate": 0.8386,
+      "male_total": 626133,
+      "female_total": 725083
+    },
+    {
+      "category": "Business",
+      "male_rate": 0.8317,
+      "female_rate": 0.8191,
+      "male_total": 11256,
+      "female_total": 16606
+    },
+    {
+      "category": "Social Studies",
+      "male_rate": 0.7851,
+      "female_rate": 0.692,
+      "male_total": 817783,
+      "female_total": 940216
     }
   ],
   "school_types": [
     {
-      "type": "All-Girls",
-      "avg_pass_rate": 0.9993,
-      "schools": 108,
-      "students": 9139
+      "type": "All Boys",
+      "schools": 43,
+      "students": 2951,
+      "avg_pass_rate": 0.9981
     },
     {
-      "type": "All-Boys",
-      "avg_pass_rate": 1.0,
-      "schools": 29,
-      "students": 2605
+      "type": "All Girls",
+      "schools": 149,
+      "students": 9964,
+      "avg_pass_rate": 0.9988
     },
     {
-      "type": "Religious",
-      "avg_pass_rate": 0.9972,
-      "schools": 128,
-      "students": 10546
+      "type": "Religious*",
+      "schools": 208,
+      "students": 10714,
+      "avg_pass_rate": 0.9941
     },
     {
-      "type": "Coeducational",
-      "avg_pass_rate": 0.9467,
-      "schools": 4280,
-      "students": 498004
+      "type": "Coed (non-religious)",
+      "schools": 5482,
+      "students": 532729,
+      "avg_pass_rate": 0.9528
     }
   ],
   "addmath_story": {
-    "dual_bm_pass_rate": 0.5057,
+    "dual_takers": 415,
+    "dual_bm_pass_rate": 0.9759,
     "overall_bm_pass_rate": 0.2557,
-    "dual_takers": 416,
-    "am_school_bm_rate": 0.5557,
-    "no_am_school_bm_rate": 0.2057,
-    "schools_with_addmath": 444
+    "schools_with_addmath": 39,
+    "am_school_bm_rate": 0.587,
+    "no_am_school_bm_rate": 0.2811
   },
-  "regions": [],
-  "region_names": {},
-  "all_div1_schools": 49,
-  "all_div0_schools": 0,
-  "all_div1_pct": 0.0108,
-  "all_div0_pct": 0.0
+  "regions": [
+    {
+      "code": "74",
+      "schools": 9,
+      "students": 357,
+      "avg_pass_rate": 0.8822
+    },
+    {
+      "code": "27",
+      "schools": 98,
+      "students": 15201,
+      "avg_pass_rate": 0.8828
+    },
+    {
+      "code": "75",
+      "schools": 4,
+      "students": 102,
+      "avg_pass_rate": 0.9167
+    },
+    {
+      "code": "32",
+      "schools": 99,
+      "students": 15243,
+      "avg_pass_rate": 0.9275
+    },
+    {
+      "code": "28",
+      "schools": 98,
+      "students": 11962,
+      "avg_pass_rate": 0.9276
+    },
+    {
+      "code": "68",
+      "schools": 24,
+      "students": 838,
+      "avg_pass_rate": 0.9286
+    },
+    {
+      "code": "72",
+      "schools": 21,
+      "students": 564,
+      "avg_pass_rate": 0.9305
+    },
+    {
+      "code": "24",
+      "schools": 92,
+      "students": 7597,
+      "avg_pass_rate": 0.931
+    },
+    {
+      "code": "26",
+      "schools": 97,
+      "students": 9082,
+      "avg_pass_rate": 0.9311
+    },
+    {
+      "code": "42",
+      "schools": 87,
+      "students": 6879,
+      "avg_pass_rate": 0.9336
+    },
+    {
+      "code": "61",
+      "schools": 87,
+      "students": 7922,
+      "avg_pass_rate": 0.9349
+    },
+    {
+      "code": "67",
+      "schools": 22,
+      "students": 1057,
+      "avg_pass_rate": 0.935
+    },
+    {
+      "code": "35",
+      "schools": 94,
+      "students": 8991,
+      "avg_pass_rate": 0.9381
+    },
+    {
+      "code": "17",
+      "schools": 96,
+      "students": 11653,
+      "avg_pass_rate": 0.9382
+    },
+    {
+      "code": "65",
+      "schools": 86,
+      "students": 6365,
+      "avg_pass_rate": 0.9389
+    },
+    {
+      "code": "73",
+      "schools": 11,
+      "students": 300,
+      "avg_pass_rate": 0.9394
+    },
+    {
+      "code": "64",
+      "schools": 89,
+      "students": 6920,
+      "avg_pass_rate": 0.9396
+    },
+    {
+      "code": "39",
+      "schools": 97,
+      "students": 8701,
+      "avg_pass_rate": 0.9409
+    },
+    {
+      "code": "37",
+      "schools": 88,
+      "students": 8312,
+      "avg_pass_rate": 0.9414
+    },
+    {
+      "code": "25",
+      "schools": 87,
+      "students": 7063,
+      "avg_pass_rate": 0.9417
+    },
+    {
+      "code": "43",
+      "schools": 85,
+      "students": 7574,
+      "avg_pass_rate": 0.9419
+    },
+    {
+      "code": "23",
+      "schools": 89,
+      "students": 8702,
+      "avg_pass_rate": 0.9422
+    },
+    {
+      "code": "34",
+      "schools": 100,
+      "students": 9647,
+      "avg_pass_rate": 0.9433
+    },
+    {
+      "code": "19",
+      "schools": 93,
+      "students": 10916,
+      "avg_pass_rate": 0.9456
+    },
+    {
+      "code": "41",
+      "schools": 88,
+      "students": 7598,
+      "avg_pass_rate": 0.9463
+    },
+    {
+      "code": "59",
+      "schools": 91,
+      "students": 7566,
+      "avg_pass_rate": 0.9465
+    },
+    {
+      "code": "31",
+      "schools": 96,
+      "students": 10617,
+      "avg_pass_rate": 0.9469
+    },
+    {
+      "code": "21",
+      "schools": 98,
+      "students": 8483,
+      "avg_pass_rate": 0.9494
+    },
+    {
+      "code": "66",
+      "schools": 36,
+      "students": 2461,
+      "avg_pass_rate": 0.95
+    },
+    {
+      "code": "62",
+      "schools": 91,
+      "students": 6359,
+      "avg_pass_rate": 0.9516
+    },
+    {
+      "code": "14",
+      "schools": 86,
+      "students": 9065,
+      "avg_pass_rate": 0.9539
+    },
+    {
+      "code": "29",
+      "schools": 100,
+      "students": 7846,
+      "avg_pass_rate": 0.9548
+    },
+    {
+      "code": "15",
+      "schools": 92,
+      "students": 9531,
+      "avg_pass_rate": 0.9556
+    },
+    {
+      "code": "13",
+      "schools": 81,
+      "students": 8336,
+      "avg_pass_rate": 0.9558
+    },
+    {
+      "code": "44",
+      "schools": 84,
+      "students": 7273,
+      "avg_pass_rate": 0.956
+    },
+    {
+      "code": "47",
+      "schools": 94,
+      "students": 6124,
+      "avg_pass_rate": 0.956
+    },
+    {
+      "code": "46",
+      "schools": 67,
+      "students": 5631,
+      "avg_pass_rate": 0.9563
+    },
+    {
+      "code": "18",
+      "schools": 85,
+      "students": 10934,
+      "avg_pass_rate": 0.9565
+    },
+    {
+      "code": "30",
+      "schools": 98,
+      "students": 10471,
+      "avg_pass_rate": 0.9573
+    },
+    {
+      "code": "16",
+      "schools": 85,
+      "students": 8941,
+      "avg_pass_rate": 0.9574
+    },
+    {
+      "code": "40",
+      "schools": 83,
+      "students": 9497,
+      "avg_pass_rate": 0.9579
+    },
+    {
+      "code": "22",
+      "schools": 95,
+      "students": 10744,
+      "avg_pass_rate": 0.9583
+    },
+    {
+      "code": "20",
+      "schools": 97,
+      "students": 8977,
+      "avg_pass_rate": 0.9586
+    },
+    {
+      "code": "45",
+      "schools": 84,
+      "students": 7242,
+      "avg_pass_rate": 0.96
+    },
+    {
+      "code": "69",
+      "schools": 25,
+      "students": 975,
+      "avg_pass_rate": 0.9602
+    },
+    {
+      "code": "36",
+      "schools": 89,
+      "students": 8617,
+      "avg_pass_rate": 0.9604
+    },
+    {
+      "code": "70",
+      "schools": 16,
+      "students": 337,
+      "avg_pass_rate": 0.9612
+    },
+    {
+      "code": "33",
+      "schools": 98,
+      "students": 8869,
+      "avg_pass_rate": 0.9614
+    },
+    {
+      "code": "49",
+      "schools": 92,
+      "students": 7715,
+      "avg_pass_rate": 0.9615
+    },
+    {
+      "code": "58",
+      "schools": 89,
+      "students": 8407,
+      "avg_pass_rate": 0.962
+    },
+    {
+      "code": "60",
+      "schools": 88,
+      "students": 7697,
+      "avg_pass_rate": 0.9633
+    },
+    {
+      "code": "08",
+      "schools": 90,
+      "students": 10961,
+      "avg_pass_rate": 0.9638
+    },
+    {
+      "code": "38",
+      "schools": 92,
+      "students": 8189,
+      "avg_pass_rate": 0.9652
+    },
+    {
+      "code": "50",
+      "schools": 87,
+      "students": 5420,
+      "avg_pass_rate": 0.969
+    },
+    {
+      "code": "10",
+      "schools": 86,
+      "students": 9504,
+      "avg_pass_rate": 0.9696
+    },
+    {
+      "code": "07",
+      "schools": 88,
+      "students": 10663,
+      "avg_pass_rate": 0.9699
+    },
+    {
+      "code": "57",
+      "schools": 88,
+      "students": 7409,
+      "avg_pass_rate": 0.9699
+    },
+    {
+      "code": "63",
+      "schools": 85,
+      "students": 6176,
+      "avg_pass_rate": 0.97
+    },
+    {
+      "code": "48",
+      "schools": 81,
+      "students": 6368,
+      "avg_pass_rate": 0.9706
+    },
+    {
+      "code": "56",
+      "schools": 86,
+      "students": 6054,
+      "avg_pass_rate": 0.9714
+    },
+    {
+      "code": "53",
+      "schools": 86,
+      "students": 5598,
+      "avg_pass_rate": 0.9717
+    },
+    {
+      "code": "11",
+      "schools": 91,
+      "students": 10957,
+      "avg_pass_rate": 0.9718
+    },
+    {
+      "code": "51",
+      "schools": 82,
+      "students": 6701,
+      "avg_pass_rate": 0.9721
+    },
+    {
+      "code": "05",
+      "schools": 79,
+      "students": 10129,
+      "avg_pass_rate": 0.9725
+    },
+    {
+      "code": "09",
+      "schools": 85,
+      "students": 11653,
+      "avg_pass_rate": 0.9728
+    },
+    {
+      "code": "71",
+      "schools": 12,
+      "students": 773,
+      "avg_pass_rate": 0.9746
+    },
+    {
+      "code": "04",
+      "schools": 72,
+      "students": 6730,
+      "avg_pass_rate": 0.9777
+    },
+    {
+      "code": "52",
+      "schools": 81,
+      "students": 6263,
+      "avg_pass_rate": 0.9798
+    },
+    {
+      "code": "12",
+      "schools": 88,
+      "students": 10291,
+      "avg_pass_rate": 0.9799
+    },
+    {
+      "code": "55",
+      "schools": 59,
+      "students": 3721,
+      "avg_pass_rate": 0.9836
+    },
+    {
+      "code": "54",
+      "schools": 72,
+      "students": 4833,
+      "avg_pass_rate": 0.9841
+    },
+    {
+      "code": "06",
+      "schools": 82,
+      "students": 9932,
+      "avg_pass_rate": 0.9842
+    },
+    {
+      "code": "03",
+      "schools": 63,
+      "students": 6901,
+      "avg_pass_rate": 0.9845
+    },
+    {
+      "code": "01",
+      "schools": 70,
+      "students": 5722,
+      "avg_pass_rate": 0.9974
+    },
+    {
+      "code": "02",
+      "schools": 76,
+      "students": 6102,
+      "avg_pass_rate": 0.9985
+    },
+    {
+      "code": "76",
+      "schools": 1,
+      "students": 58,
+      "avg_pass_rate": 1.0
+    }
+  ],
+  "all_div1_schools": 70,
+  "all_div0_schools": 1,
+  "all_div1_pct": 0.0119,
+  "all_div0_pct": 0.0002,
+  "div4_narrative": {
+    "div4_count": 271540,
+    "div4_pct": 0.4889,
+    "current_pass_rate": 0.9498,
+    "without_div4_rate": 0.4609,
+    "drop_pp": 48.9,
+    "schools_would_flip": 3569,
+    "schools_would_flip_pct": 0.6087,
+    "all_div4_schools": 7
+  },
+  "small_schools": {
+    "threshold": 40,
+    "small_count": 1318,
+    "small_pct": 0.2248,
+    "regular_count": 4545,
+    "small_avg_rate": 0.9637,
+    "regular_avg_rate": 0.9532,
+    "very_small_anomalies": [
+      {
+        "code": "S2336",
+        "name": "EXCELLENCY SECONDARY SCHOOL",
+        "students": 3,
+        "pass_rate": 0.0
+      },
+      {
+        "code": "S1412",
+        "name": "VICTORIA SECONDARY SCHOOL",
+        "students": 2,
+        "pass_rate": 0.5
+      },
+      {
+        "code": "S7240",
+        "name": "LAKE ITAMBA SECONDARY SCHOOL",
+        "students": 12,
+        "pass_rate": 0.5833
+      },
+      {
+        "code": "S3754",
+        "name": "SAVIAK SECONDARY SCHOOL",
+        "students": 5,
+        "pass_rate": 0.6
+      },
+      {
+        "code": "S7303",
+        "name": "SEREGETE SECONDARY SCHOOL",
+        "students": 5,
+        "pass_rate": 0.6
+      },
+      {
+        "code": "S1475",
+        "name": "PERFECT VISION SECONDARY SCHOOL",
+        "students": 9,
+        "pass_rate": 0.6667
+      },
+      {
+        "code": "S2532",
+        "name": "ADAM SECONDARY SCHOOL",
+        "students": 6,
+        "pass_rate": 0.6667
+      },
+      {
+        "code": "S2741",
+        "name": "SINGISA SECONDARY SCHOOL",
+        "students": 12,
+        "pass_rate": 0.6667
+      }
+    ]
+  }
 }
