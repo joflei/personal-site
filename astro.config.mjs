@@ -3,6 +3,5 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://joflei.github.io',
-  base: '/personal-site',
+  site: 'https://rugarabamu.me',
 });

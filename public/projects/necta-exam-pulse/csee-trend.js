@@ -56,10 +56,11 @@ function shortName(name) {
 
 // ─── Data loading ─────────────────────────────────────────────
 let DATA = {};
+let STREAK = 0; // set by buildCh1, read by buildCh2
 
 async function loadAll() {
     // Use bundled global (data/trend/data.js) so the page works on file:// without a server.
-    const files = ['ch1_growth','ch2_passrates','ch3_gender','ch4_schools','ch5_regions','ch6_extremes','ch7_schoolsize','ch8_schooltype'];
+    const files = ['ch1_growth','ch2_passrates','ch3_gender','ch4_schools','ch5_regions','ch6_extremes','ch7_schoolsize','ch8_schooltype','ch_div4'];
     if (window.TREND_DATA) {
         files.forEach(f => { DATA[f] = window.TREND_DATA[f]; });
         return;
@@ -134,6 +135,7 @@ function buildCh1() {
         if (pr[i].pass_rate > pr[i - 1].pass_rate) streak++;
         else break;
     }
+    STREAK = streak; // hoist for use in buildCh2
 
     document.getElementById('hero-schools').textContent = schoolGrowthPct;
     document.getElementById('hero-candidates').textContent = candGrowth;
@@ -149,9 +151,9 @@ function buildCh1() {
 
     const wrap = document.getElementById('ch1-callouts');
     wrap.append(
-        makeCallout(Math.round(last.total_candidates / first.total_candidates) + '×',
+        makeCallout('+' + Math.round((last.total_candidates / first.total_candidates - 1) * 100) + '%',
                     'Candidate growth (2003–2025)', true),
-        makeCallout(Math.round(last.school_count / first.school_count) + '×',
+        makeCallout('+' + Math.round((last.school_count / first.school_count - 1) * 100) + '%',
                     'School growth (2003–2025)'),
         makeCallout('+' + sedpGrowth + '%', 'Candidate surge during SEDP era (2007–2012)'),
         makeCallout('+' + cpsPct + '%',     'Growth in avg candidates per school (class size pressure)'),
@@ -234,19 +236,16 @@ function buildCh2() {
     const data = DATA.ch2_passrates;
     const years = data.map(r => r.year);
 
-    // Callout cards: use 2013 and 2025 as anchors
-    const r2013 = data.find(r => r.year === 2013);
+    // Callout cards
     const r2025 = data.find(r => r.year === 2025);
     const rWorst = data.reduce((a,b) => ((b.pass_rate||1) < (a.pass_rate||1) ? b : a), data[0]);
     const failRate2012 = rWorst.div_fail / rWorst.total_sat;
-    const failRate2025 = r2025.div_fail / r2025.total_sat;
-    const pptDrop = Math.round((failRate2012 - failRate2025) * 100);
     const wrap = document.getElementById('ch2-callouts');
     wrap.append(
-        makeCallout(pct0(rWorst.pass_rate),  `Worst pass rate (${rWorst.year})`, false),
-        makeCallout(pct0(r2025.pass_rate),   'Pass rate 2025', true),
-        makeCallout(pct0(failRate2012),      `Failure rate at peak (${rWorst.year})`),
-        makeCallout(`\u2212${pptDrop} ppt`,  'Failure rate drop by 2025'),
+        makeCallout(pct0(rWorst.pass_rate),  `Lowest pass rate on record (${rWorst.year})`),
+        makeCallout(pct0(r2025.pass_rate),   'Pass rate in 2025', true),
+        makeCallout(pct0(failRate2012),      `Failure rate at the 2012 peak`),
+        makeCallout(STREAK + ' years',       'consecutive years of rising pass rates'),
     );
 
     // Stacked bar chart: division composition
@@ -339,6 +338,146 @@ function buildCh2() {
                 }
             }
         }
+    });
+}
+
+// ─── Division IV note (inside Ch2) ───────────────────────────
+function buildDiv4() {
+    const data = DATA.ch_div4;
+    if (!data) return;
+
+    function pct(v) { return Math.round(v * 100) + '%'; }
+    function median(arr) {
+        const s = [...arr].sort((a, b) => a - b);
+        const m = Math.floor(s.length / 2);
+        return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
+    }
+
+    const r2012 = data.find(d => d.year === 2012);
+    const r2025 = data.find(d => d.year === 2025);
+
+    // Snapshot callouts
+    const snapGrid = document.getElementById('ch2-div4-snap');
+    [
+        { n: pct(r2012.pass_rate_all), l: 'Headline pass rate, 2012 (Div I–IV)', accent: true },
+        { n: pct(r2012.pass_rate_123), l: 'Quality passes only, 2012 (Div I–III)' },
+        { n: pct(r2025.pass_rate_all), l: 'Headline pass rate, 2025 (Div I–IV)', accent: true },
+        { n: pct(r2025.pass_rate_123), l: 'Quality passes only, 2025 (Div I–III)' },
+    ].forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'callout-card';
+        el.innerHTML = `<div class="cc-number${c.accent ? ' accent' : ''}">${c.n}</div><div class="cc-label">${c.l}</div>`;
+        snapGrid.appendChild(el);
+    });
+
+    // Averages
+    const allRates  = data.map(d => Math.round(d.pass_rate_all * 100));
+    const q123Rates = data.map(d => Math.round(d.pass_rate_123 * 100));
+    const meanAll   = Math.round(allRates.reduce((a, b) => a + b, 0) / allRates.length);
+    const medAll    = median(allRates);
+    const mean123   = Math.round(q123Rates.reduce((a, b) => a + b, 0) / q123Rates.length);
+    const med123    = median(q123Rates);
+
+    const highest = data.reduce((a,b) => b.pass_rate_all > a.pass_rate_all ? b : a);
+    const lowest  = data.reduce((a,b) => b.pass_rate_all < a.pass_rate_all ? b : a);
+
+    const avgGrid = document.getElementById('ch2-div4-avg');
+    [
+        { n: meanAll + '%',              l: 'Mean pass rate, 2003–2025'    },
+        { n: medAll  + '%',              l: 'Median pass rate, 2003–2025'  },
+        { n: pct(highest.pass_rate_all), l: `Highest: ${highest.year}`     },
+        { n: pct(lowest.pass_rate_all),  l: `Lowest: ${lowest.year}`       },
+    ].forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'callout-card';
+        el.innerHTML = `<div class="cc-number">${c.n}</div><div class="cc-label">${c.l}</div>`;
+        avgGrid.appendChild(el);
+    });
+
+    const gap = medAll - meanAll;
+    document.getElementById('ch2-div4-avg-note').textContent =
+        `The ${gap}-point gap between mean (${meanAll}%) and median (${medAll}%) reflects the 2009–2012 crisis years ` +
+        `pulling the long-run average down. The median is a better single-number summary of the typical year. ` +
+        `For quality passes (Div I–III only), mean and median are within ${Math.abs(med123 - mean123)} points of each other.`;
+
+    // Dual-line chart
+    new Chart(document.getElementById('ch2-div4-chart'), {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.year),
+            datasets: [
+                {
+                    label: 'All passes (Div I–IV)',
+                    data: allRates,
+                    borderColor: C.accent,
+                    backgroundColor: 'transparent',
+                    borderWidth: 2.5,
+                    pointRadius: 3,
+                    pointBackgroundColor: data.map(d => d.source === 'necta' ? C.accent : C.terracotta),
+                    tension: 0.3,
+                    order: 2
+                },
+                {
+                    label: 'Quality passes (Div I–III only)',
+                    data: q123Rates,
+                    borderColor: C.espresso,
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: data.map(d => d.source === 'necta' ? C.espresso : C.walnut),
+                    tension: 0.3,
+                    order: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: C.espresso,
+                    titleColor: C.border,
+                    bodyColor: C.sand,
+                    callbacks: {
+                        title: ctx => String(ctx[0].label),
+                        label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: C.borderLight },
+                    ticks: { color: C.warmGray, maxTicksLimit: 12 }
+                },
+                y: {
+                    min: 0, max: 100,
+                    grid: { color: C.borderLight },
+                    ticks: { color: C.warmGray, callback: v => v + '%', maxTicksLimit: 6 }
+                }
+            }
+        }
+    });
+
+    // Reference table
+    const REF_YEARS = [2003, 2009, 2012, 2013, 2018, 2020, 2025];
+    const NOTES = {
+        2003: 'Baseline', 2009: 'SEDP expansion peak', 2012: 'Crisis trough',
+        2013: 'Recovery inflection', 2018: 'Mid-recovery', 2020: 'Steady improvement', 2025: 'Current'
+    };
+    const tbody = document.getElementById('ch2-div4-table');
+    REF_YEARS.forEach(yr => {
+        const d = data.find(r => r.year === yr);
+        const tr = document.createElement('tr');
+        const hi = yr === 2012 || yr === 2025;
+        const tdStyle = `padding:0.5rem 0.75rem;border-bottom:1px solid #e8e0d6;${hi ? 'font-weight:600;background:#f0ebe4;' : ''}`;
+        tr.innerHTML = `
+            <td style="${tdStyle}">${yr}</td>
+            <td style="${tdStyle}text-align:right;font-variant-numeric:tabular-nums;">${pct(d.pass_rate_all)}</td>
+            <td style="${tdStyle}text-align:right;font-variant-numeric:tabular-nums;">${pct(d.pass_rate_123)}</td>
+            <td style="${tdStyle}text-align:right;font-variant-numeric:tabular-nums;">${pct(d.div4_pct)}</td>
+            <td style="${tdStyle}color:#8c7e72;font-size:0.8125rem;">${NOTES[yr]}</td>`;
+        tbody.appendChild(tr);
     });
 }
 
@@ -481,7 +620,7 @@ function buildCh3() {
 // ═════════════════════════════════════════════════════════════
 function buildCh4() {
     const data = DATA.ch4_schools;
-    const top20 = data.slice(0, 20);
+    const top10 = data.slice(0, 10);
 
     // Callout cards : rates, not raw counts
     const wrap = document.getElementById('ch4-callouts');
@@ -491,7 +630,7 @@ function buildCh4() {
     wrap.append(
         makeCallout(pct0(top1.avg_div1_rate), `${shortName(top1.school_name)}: 22yr avg Div I`, true),
         makeCallout(pct0(data[data.length - 1].avg_div1_rate), `${shortName(data[data.length-1].school_name)}: avg Div I (rank ${data.length})`),
-        makeCallout(top1.years_present + '/' + 23, 'Years in top school\'s record'),
+        makeCallout(data.length + ' schools', 'qualify with 20+ years of data'),
         makeCallout(avgClassSize != null ? '~' + avgClassSize + ' /yr' : '', 'Avg class size at top school'),
     );
 
@@ -520,7 +659,7 @@ function buildCh4() {
     `;
     const tbody = document.createElement('tbody');
 
-    top20.forEach((school, idx) => {
+    top10.forEach((school, idx) => {
         const tr = document.createElement('tr');
 
         // Build sparkline bar chart
@@ -591,67 +730,157 @@ function buildCh5() {
         leagueEl.appendChild(row);
     });
 
-    // Top 3 trend line chart
-    const top3 = mainland.slice(0, 3);
+    buildCh5Map(mainland);
+}
 
-    // Collect all years
-    const allYears = Array.from(new Set(
-        mainland.flatMap(r => r.years.map(y => y.year))
-    )).sort((a,b) => a - b);
+function buildCh5Map(mainland) {
+    const geo = window.GEO_TZA;
+    if (!geo) { console.warn('GEO_TZA not loaded'); return; }
 
-    const lineColors = [C.terracotta, C.accent, C.olive];
+    // NECTA ALL-CAPS region → GeoJSON NAME_1
+    const REGION_MAP = {
+        'ARUSHA': 'Arusha', 'DAR ES SALAAM': 'DaresSalaam',
+        'DODOMA': 'Dodoma', 'GEITA': 'Geita', 'IRINGA': 'Iringa',
+        'KAGERA': 'Kagera', 'KATAVI': 'Katavi', 'KIGOMA': 'Kigoma',
+        'KILIMANJARO': 'Kilimanjaro', 'LINDI': 'Lindi', 'MANYARA': 'Manyara',
+        'MARA': 'Mara', 'MBEYA': 'Mbeya', 'MOROGORO': 'Morogoro',
+        'MTWARA': 'Mtwara', 'MWANZA': 'Mwanza', 'NJOMBE': 'Njombe',
+        'PWANI': 'Pwani', 'RUKWA': 'Rukwa', 'RUVUMA': 'Ruvuma',
+        'SHINYANGA': 'Shinyanga', 'SIMIYU': 'Simiyu', 'SINGIDA': 'Singida',
+        'SONGWE': 'Songwe', 'TABORA': 'Tabora', 'TANGA': 'Tanga',
+    };
 
-    const ctx = document.getElementById('ch5-trend').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: allYears,
-            datasets: top3.map((region, i) => {
-                const yMap = {};
-                region.years.forEach(y => { yMap[y.year] = y.div1_rate; });
-                return {
-                    label: region.region,
-                    data: allYears.map(y => yMap[y] ?? null),
-                    borderColor: lineColors[i],
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    tension: 0.3,
-                    pointRadius: 0,
-                    spanGaps: false,
-                };
-            })
-        },
-        options: {
-            responsive: true,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: {
-                    display: true, position: 'bottom',
-                    labels: {
-                        boxWidth: 20, boxHeight: 2,
-                        font: { size: 10 }, color: C.warmGray, padding: 8,
-                        usePointStyle: false,
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => {
-                            const v = ctx.parsed.y;
-                            return v == null ? null : `${ctx.dataset.label}: ${(v * 100).toFixed(1)}%`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { maxTicksLimit: 12, color: C.warmGray } },
-                y: {
-                    grid: { color: C.borderLight },
-                    ticks: { callback: v => (v * 100).toFixed(0) + '%', color: C.warmGray, maxTicksLimit: 5 },
-                    min: 0,
-                }
-            }
-        }
+    // Build year list from data
+    const allYears = [...new Set(mainland.flatMap(r => r.years.map(y => y.year)))].sort((a,b)=>a-b);
+
+    const sel = document.getElementById('ch5-year');
+    // "All years (avg)" as the default first option
+    const avgOpt = document.createElement('option');
+    avgOpt.value = 'avg'; avgOpt.textContent = 'All years (avg)';
+    sel.appendChild(avgOpt);
+    allYears.forEach(yr => {
+        const opt = document.createElement('option');
+        opt.value = yr; opt.textContent = yr;
+        sel.appendChild(opt);
     });
+    sel.value = 'avg'; // default: most informative view
+
+    // Build lookup: geoName → pass_rate for a given year or 'avg'
+    function makeRateMap(year) {
+        const out = {};
+        mainland.forEach(r => {
+            const gn = REGION_MAP[r.region];
+            if (!gn) return;
+            if (year === 'avg') {
+                const valid = r.years.filter(y => y.pass_rate != null);
+                if (valid.length) out[gn] = valid.reduce((s, y) => s + y.pass_rate, 0) / valid.length;
+            } else {
+                const yd = r.years.find(y => y.year === +year);
+                if (yd && yd.pass_rate != null) out[gn] = yd.pass_rate;
+            }
+        });
+        return out;
+    }
+
+    // Color scale: dynamic domain per render for maximum contrast
+    // Using d3.interpolateOrRd (yellow-orange-red, perceptually uniform, colorblind-safe)
+    const colorScale = d3.scaleSequential()
+        .interpolator(d3.interpolateOrRd)
+        .clamp(true);
+
+    const container = document.getElementById('ch5-map');
+    const W = container.clientWidth || 720;
+    const H = Math.round(W * 1.05); // Tanzania is taller than wide
+
+    const projection = d3.geoMercator().fitSize([W, H], geo);
+    const pathGen = d3.geoPath().projection(projection);
+
+    const svg = d3.select('#ch5-map').append('svg')
+        .attr('viewBox', `0 0 ${W} ${H}`)
+        .attr('width', '100%')
+        .style('display', 'block');
+
+    const regions = svg.selectAll('path')
+        .data(geo.features)
+        .join('path')
+        .attr('d', pathGen)
+        .attr('stroke', '#c8bfb2')
+        .attr('stroke-width', 0.8);
+
+    // Tooltip
+    const tip = d3.select('#ch5-map').append('div')
+        .style('position', 'absolute')
+        .style('pointer-events', 'none')
+        .style('background', '#2c2418')
+        .style('color', '#faf6f1')
+        .style('font-size', '0.75rem')
+        .style('line-height', '1.4')
+        .style('padding', '0.35rem 0.65rem')
+        .style('border-radius', '3px')
+        .style('opacity', 0)
+        .style('white-space', 'nowrap');
+
+    function render(year) {
+        const rm = makeRateMap(year);
+        // Dynamic domain: stretch color range across actual data for this view
+        const vals = Object.values(rm).filter(v => v != null);
+        const lo = vals.length ? Math.max(0, d3.min(vals) - 0.04) : 0.3;
+        const hi = vals.length ? Math.min(1, d3.max(vals) + 0.02) : 1.0;
+        colorScale.domain([lo, hi]);
+
+        regions
+            .attr('fill', d => {
+                const v = rm[d.properties.NAME_1];
+                return v != null ? colorScale(v) : '#e8e0d6';
+            })
+            .on('mousemove', function(e, d) {
+                const v = rm[d.properties.NAME_1];
+                const label = v != null ? Math.round(v * 100) + '% pass rate' : 'No data';
+                tip.style('opacity', 1)
+                   .style('left', (e.offsetX + 14) + 'px')
+                   .style('top',  (e.offsetY - 10) + 'px')
+                   .html(`<strong>${d.properties.NAME_1}</strong><br>${label}`);
+                d3.select(this).attr('stroke', '#2c2418').attr('stroke-width', 1.5);
+            })
+            .on('mouseleave', function() {
+                tip.style('opacity', 0);
+                d3.select(this).attr('stroke', '#c8bfb2').attr('stroke-width', 0.8);
+            });
+    }
+
+    render(sel.value);
+    sel.addEventListener('change', e => render(e.target.value));
+
+    // Legend bar
+    const legendW = Math.min(200, Math.round(W * 0.45));
+    const legendH = 8;
+    const legendSvg = d3.select('#ch5-map').append('svg')
+        .attr('width', legendW + 60)
+        .attr('height', 28)
+        .style('display', 'block')
+        .style('margin', '0.5rem 0 0');
+
+    const defs = legendSvg.append('defs');
+    const grad = defs.append('linearGradient').attr('id', 'ch5-grad');
+    d3.range(0, 1.01, 0.1).forEach(t => {
+        grad.append('stop')
+            .attr('offset', (t * 100) + '%')
+            .attr('stop-color', d3.interpolateOrRd(t));
+    });
+    legendSvg.append('rect')
+        .attr('x', 30).attr('y', 0)
+        .attr('width', legendW).attr('height', legendH)
+        .attr('rx', 2)
+        .attr('fill', 'url(#ch5-grad)');
+    legendSvg.append('text').attr('x', 28).attr('y', legendH - 1)
+        .attr('text-anchor', 'end').attr('font-size', '0.625rem').attr('fill', '#8c7e72')
+        .text('Lower');
+    legendSvg.append('text').attr('x', 32 + legendW).attr('y', legendH - 1)
+        .attr('font-size', '0.625rem').attr('fill', '#8c7e72')
+        .text('Higher');
+    legendSvg.append('text').attr('x', 30 + legendW / 2).attr('y', legendH + 12)
+        .attr('text-anchor', 'middle').attr('font-size', '0.625rem').attr('fill', '#8c7e72')
+        .text('Pass rate (Div I–IV), relative to selected year');
 }
 
 // ═════════════════════════════════════════════════════════════
@@ -696,7 +925,7 @@ function buildCh6() {
         </thead>
     `;
     const perfBody = document.createElement('tbody');
-    data.perfect_classes.slice(0, 20).forEach(r => {
+    data.perfect_classes.slice(0, 10).forEach(r => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="color:${C.warmGray}">${r.year}</td>
@@ -708,8 +937,8 @@ function buildCh6() {
     });
     perfTable.appendChild(perfBody);
     perfEl.appendChild(perfTable);
-    if (data.perfect_classes.length > 20) {
-        perfEl.innerHTML += `<p class="chart-note">Showing top 20 of ${data.perfect_classes.length} total (largest cohorts first).</p>`;
+    if (data.perfect_classes.length > 10) {
+        perfEl.innerHTML += `<p class="chart-note">Showing top 10 of ${data.perfect_classes.length} total (largest cohorts first).</p>`;
     }
 
     // Bottom schools table
@@ -727,7 +956,7 @@ function buildCh6() {
         </thead>
     `;
     const botBody = document.createElement('tbody');
-    data.bottom_schools.slice(0, 15).forEach(r => {
+    data.bottom_schools.slice(0, 10).forEach(r => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td style="font-weight:500">${shortName(r.school_name)}</td>
@@ -750,10 +979,10 @@ function buildCh6() {
             <div class="sp-school">ST. FRANCIS GIRLS' SECONDARY SCHOOL</div>
             <div class="sp-region">Mbeya &nbsp;·&nbsp; 2024</div>
             <div class="sp-stat">
-                <strong>91</strong> students sat the exam.<br>
+                <strong>91</strong> students sat.<br>
                 <strong>91</strong> scored Division I.<br>
-                <strong>91</strong> scored aggregate 7, the highest possible grade in every subject.<br>
-                The only time this has occurred in 22 years of data.
+                <strong>91</strong> scored aggregate 7 — Grade A in every one of their seven subjects. Not a single grade below.<br>
+                The only time this has happened in 22 years of data across 8.5 million candidates.
             </div>
         `;
         psEl.appendChild(card);
@@ -996,6 +1225,7 @@ async function main() {
 
         buildCh1();
         buildCh2();
+        buildDiv4();
         buildCh3();
         buildCh4();
         buildCh5();
