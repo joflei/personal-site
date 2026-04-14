@@ -62,8 +62,7 @@ Open your browser:
 - **Thinking index:** `http://localhost:4321/writing`
 - **Your article:** `http://localhost:4321/writing/your-slug`
 
-> **Known issue — card links 404 locally:**
-> On the Thinking index, clicking an article card will 404 in the local dev server. This is expected. The card links are hardcoded with the `/personal-site/` prefix (matching GitHub Pages), but the dev server serves from `/`. Go directly to `http://localhost:4321/writing/your-slug` to preview the article page. The links work correctly in production.
+> **Note:** Card links and the "Back to Writing" link both work correctly in the local dev server and in production. If you ever see 404s on article links, check that no `/personal-site/` prefix has crept into `src/pages/writing.astro` or `src/pages/writing/[slug].astro` — the site uses a custom domain with no base path, so all links should start with `/writing/`.
 
 ---
 
@@ -252,6 +251,38 @@ These are either auto-generated or belong to a different feature. Stage only wha
 | Article card link (from index) | ❌ 404 (has `/personal-site/` prefix) | ✅ Works |
 
 **Rule of thumb:** Always test article pages directly via their URL. Don't rely on clicking cards in the local index.
+
+---
+
+### Issue 6: Push blocked by GitHub secret scanning
+
+**Symptom:** `git push` fails with:
+
+```
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: - GITHUB PUSH PROTECTION
+remote:   Push cannot contain secrets
+remote:   — GitHub Personal Access Token
+```
+
+**What causes it:** GitHub found a secret (API key, personal access token, etc.) somewhere in the commit history — even if it's in an old commit, not your latest one.
+
+**How to fix:**
+
+1. First, rotate the leaked token if you haven't already:
+   - Go to GitHub → Settings → Developer settings → Personal access tokens
+   - Delete or regenerate the token that was exposed
+   - This makes the leaked value useless to anyone who saw it
+
+2. Then unblock the push via the URL GitHub provides in the error message:
+   ```
+   https://github.com/joflei/personal-site/security/secret-scanning/unblock-secret/...
+   ```
+   Click "Allow secret" (safe to do after rotating the token)
+
+3. Run `git push` again — it will succeed
+
+**Note:** The token in question was in `website.env` in commit `35c205d`, not in any writing-section files. It was a pre-existing issue surfaced when pushing new commits.
 
 ---
 
