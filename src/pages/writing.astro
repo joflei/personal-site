@@ -29,7 +29,7 @@ const sortedPosts = allPosts
               month: 'long',
               day: 'numeric',
             })}
-            slug={post.data.draft ? undefined : `/personal-site/writing/${post.slug}`}
+            slug={post.data.draft ? undefined : `/writing/${post.slug}`}
             series={post.data.series}
             draft={post.data.draft}
           />
