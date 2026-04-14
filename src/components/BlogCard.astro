@@ -4,14 +4,26 @@ interface Props {
   excerpt: string;
   date: string;
   slug?: string;
+  series?: string;
+  draft?: boolean;
 }
 
-const { title, excerpt, date, slug } = Astro.props;
+const { title, excerpt, date, slug, series, draft } = Astro.props;
 ---
 
-<article class="card group">
-  <time class="text-xs text-warm-gray uppercase tracking-wider">{date}</time>
-  <h3 class="text-lg font-serif font-semibold text-espresso mt-2 mb-2 group-hover:text-terracotta transition-colors">
+<article class:list={["card group", draft && "opacity-60 border-dashed"]}>
+  <div class="flex items-center gap-3 mb-2 flex-wrap">
+    <time class="text-xs text-warm-gray uppercase tracking-wider">{date}</time>
+    {series && (
+      <span class="text-xs text-terracotta uppercase tracking-wider font-medium">{series}</span>
+    )}
+    {draft && (
+      <span class="text-xs bg-espresso/10 text-espresso/50 uppercase tracking-wider font-medium px-2 py-0.5 rounded">
+        Draft
+      </span>
+    )}
+  </div>
+  <h3 class="text-lg font-serif font-semibold text-espresso mt-1 mb-2 group-hover:text-terracotta transition-colors">
     {slug ? (
       <a href={slug} class="no-underline text-inherit hover:text-terracotta">{title}</a>
     ) : (

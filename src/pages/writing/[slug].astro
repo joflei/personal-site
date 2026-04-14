@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const formattedDate = new Date(post.data.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${post.data.title} | Geoffrey Rugarabamu`}>
+  <section class="page-section">
+    <div class="section-container max-w-3xl">
+
+      <div class="mb-6">
+        <a href="/personal-site/writing" class="text-sm text-warm-gray hover:text-terracotta transition-colors">
+          &larr; Back to Writing
+        </a>
+      </div>
+
+      {post.data.series && (
+        <p class="text-xs text-terracotta uppercase tracking-wider font-medium mb-3">
+          {post.data.series}
+        </p>
+      )}
+
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-4 leading-tight">
+        {post.data.title}
+      </h1>
+
+      <time class="text-sm text-warm-gray">{formattedDate}</time>
+
+      <hr class="border-espresso/10 my-8" />
+
+      <div class="article-body">
+        <Content />
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .article-body p {
+    color: rgba(44, 33, 24, 0.8);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-body h2 {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c2118;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-body h3 {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c2118;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-body hr {
+    border-color: rgba(44, 33, 24, 0.1);
+    margin: 2rem 0;
+  }
+
+  .article-body strong {
+    color: #2c2118;
+    font-weight: 600;
+  }
+
+  .article-body a {
+    color: #c0674a;
+    text-decoration: none;
+  }
+
+  .article-body a:hover {
+    text-decoration: underline;
+  }
+
+  .article-body ul,
+  .article-body ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-body ul {
+    list-style-type: disc;
+  }
+
+  .article-body ol {
+    list-style-type: decimal;
+  }
+
+  .article-body li {
+    color: rgba(44, 33, 24, 0.8);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    margin-bottom: 0.4rem;
+  }
+
+  .article-body blockquote {
+    border-left: 3px solid #c0674a;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: rgba(44, 33, 24, 0.65);
+    font-style: italic;
+  }
+
+  .article-body code {
+    background: rgba(44, 33, 24, 0.06);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+</style>

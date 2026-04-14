@@ -1,36 +1,37 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 
-const posts = [
-  {
-    title: 'Why Metric Definitions Matter More Than Dashboards',
-    excerpt: 'Most analytics teams jump straight to visualization. But if stakeholders can\'t agree on what "attrition rate" means, the prettiest dashboard in the world won\'t help.',
-    date: 'Coming soon',
-  },
-  {
-    title: 'The Hidden Cost of Bad Data: A Framework for Investment Sizing',
-    excerpt: 'How do you convince leadership to invest in data quality? You show them what bad data is already costing. Here\'s the framework I use.',
-    date: 'Coming soon',
-  },
-];
+const allPosts = await getCollection('blog');
+
+const sortedPosts = allPosts
+  .filter((post) => import.meta.env.PROD ? !post.data.draft : true)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
-<BaseLayout title="Writing | Geoffrey Rugarabamu">
+<BaseLayout title="Thinking | Geoffrey Rugarabamu">
   <section class="page-section">
     <div class="section-container max-w-3xl">
-      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-4">Writing</h1>
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-espresso mb-4">Thinking</h1>
       <p class="text-espresso/70 text-base sm:text-lg mb-12 leading-relaxed">
-        Thoughts on data governance, analytics leadership, and making organizations
-        smarter about how they use data.
+        Case studies and frameworks on data governance, analytics leadership, and making
+        organizations smarter about how they use data.
       </p>
 
       <div class="grid gap-6">
-        {posts.map((post) => (
+        {sortedPosts.map((post) => (
           <BlogCard
-            title={post.title}
-            excerpt={post.excerpt}
-            date={post.date}
+            title={post.data.title}
+            excerpt={post.data.description}
+            date={new Date(post.data.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+            slug={post.data.draft ? undefined : `/personal-site/writing/${post.slug}`}
+            series={post.data.series}
+            draft={post.data.draft}
           />
         ))}
       </div>

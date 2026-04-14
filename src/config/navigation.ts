@@ -21,13 +21,13 @@ export const navigationItems: NavItem[] = [
   { label: 'About',      href: '/about',      enabled: true  },
   { label: 'Experience',  href: '/experience', enabled: true  },
   { label: 'Projects',   href: '/projects',   enabled: true  },
-  { label: 'Contact',    href: '/contact',    enabled: true  },
+  { label: 'Contact',    href: '/contact',    enabled: false },
 
   // ----------------------------------------------------------
   // HIDDEN PAGES: built and routed, but not shown in nav yet.
   // Change `enabled` to `true` when you're ready to launch them.
   // ----------------------------------------------------------
-  { label: 'Writing',    href: '/writing',    enabled: false },
+  { label: 'Thinking',   href: '/writing',    enabled: true  },
 ];
 
 export const siteConfig = {
