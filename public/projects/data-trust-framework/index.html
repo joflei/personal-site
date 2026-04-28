@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Data Trust Framework · Geoffrey Rugarabamu</title>
+  <meta name="description" content="A four-pillar SQL system that makes every metric auditable, reliable, and trusted." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:       #FAF6F1;
+      --espresso:   #2C2418;
+      --terracotta: #B8652A;
+      --sage:       #6B7F5E;
+      --walnut:     #3A2E22;
+      --muted:      #8c7e72;
+      --border:     #d4c8b8;
+      --code-bg:    #1e1a14;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--sand);
+      color: var(--espresso);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Source Serif 4', serif;
+      line-height: 1.2;
+    }
+
+    a { color: var(--terracotta); text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.75; }
+
+    /* ── Nav ── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--sand);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-back {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .nav-back:hover { color: var(--espresso); opacity: 1; }
+    .nav-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--espresso);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .project-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 1.25rem;
+    }
+    .project-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      flex-shrink: 0;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--espresso);
+      max-width: 680px;
+      margin: 0 auto 1rem;
+    }
+    .hero .tagline {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.1875rem);
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.5;
+    }
+    .pillar-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+    }
+    .pillar-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.125rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.8);
+      border: 1.5px solid var(--border);
+      color: var(--espresso);
+    }
+    .pillar-chip .n {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: white;
+      font-size: 0.6875rem;
+      font-weight: 700;
+    }
+
+    /* ── Sections ── */
+    .section {
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 1.5rem;
+    }
+    .inner { max-width: 900px; margin: 0 auto; }
+
+    .sec-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 0.625rem;
+    }
+    .section h2 {
+      font-size: clamp(1.5rem, 3vw, 1.875rem);
+      font-weight: 700;
+      color: var(--espresso);
+      margin-bottom: 1.25rem;
+    }
+    .prose p {
+      font-size: 1.0625rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 680px;
+      margin-bottom: 1rem;
+    }
+    .prose p:last-child { margin-bottom: 0; }
+
+    /* ── Callout ── */
+    .callout {
+      background: rgba(184,101,42,0.06);
+      border-left: 3px solid var(--terracotta);
+      border-radius: 0 8px 8px 0;
+      padding: 1.125rem 1.375rem;
+      margin: 1.5rem 0;
+      max-width: 680px;
+    }
+    .callout p {
+      color: var(--espresso) !important;
+      font-size: 1rem !important;
+      margin: 0 !important;
+      max-width: none !important;
+    }
+    .callout strong { color: var(--terracotta); }
+
+    /* ── Pillar cards ── */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 1.125rem;
+      margin-top: 2.5rem;
+    }
+    .pillar-card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .pillar-card .badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .pillar-card .eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .pillar-card .name {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--espresso);
+      margin-bottom: 0.625rem;
+      line-height: 1.3;
+    }
+    .pillar-card p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .table-ref {
+      display: inline-block;
+      margin-top: 0.875rem;
+      font-size: 0.75rem;
+      font-family: 'Courier New', monospace;
+      background: var(--sand);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1875rem 0.5rem;
+      color: var(--terracotta);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Code blocks ── */
+    .code-block { margin: 1.75rem 0; }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--walnut);
+      padding: 0.625rem 1rem;
+      border-radius: 8px 8px 0 0;
+    }
+    .code-header .code-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.02em;
+    }
+    .copy-btn {
+      font-size: 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      color: rgba(255,255,255,0.45);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 0.25rem 0.625rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { color: white; border-color: rgba(255,255,255,0.35); }
+
+    pre[class*="language-"] {
+      margin: 0 !important;
+      border-radius: 0 0 8px 8px !important;
+      background: var(--code-bg) !important;
+      font-size: 0.8375rem !important;
+      line-height: 1.65 !important;
+      overflow-x: auto;
+      tab-size: 2;
+    }
+    code[class*="language-"] { font-size: 0.8375rem !important; }
+
+    /* Tune token colors to match walnut palette */
+    .token.keyword   { color: #d97757 !important; }
+    .token.string    { color: #8da87a !important; }
+    .token.comment   { color: #5c5247 !important; font-style: italic; }
+    .token.number    { color: #d4a96a !important; }
+    .token.operator  { color: #c9a87c !important; }
+    .token.function  { color: #a8b5c8 !important; }
+
+    /* ── Trust score table ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead { background: var(--walnut); }
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--espresso);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.45); }
+    td code {
+      font-size: 0.8125rem;
+      background: rgba(0,0,0,0.05);
+      border-radius: 3px;
+      padding: 0.1rem 0.35rem;
+      font-family: 'Courier New', monospace;
+    }
+    .check { color: var(--sage); font-size: 1rem; }
+    .cross { color: #c0796b; font-size: 1rem; }
+
+    .score-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .bar-wrap { width: 64px; }
+    .bar { height: 5px; background: var(--border); border-radius: 9999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 9999px; }
+
+    /* ── Extension cards ── */
+    .ext-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.125rem;
+      margin-top: 2rem;
+    }
+    .ext-card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.375rem;
+    }
+    .ext-card .ext-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--espresso);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .ext-card p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--walnut);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    footer a { color: rgba(255,255,255,0.85); font-size: 0.875rem; }
+    footer a:hover { color: white; opacity: 1; }
+    footer .credit {
+      margin-top: 1rem;
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 560px) {
+      .section { padding: 3rem 1.25rem; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      .pillar-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 400px) {
+      .pillar-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Projects
+      </a>
+      <span class="nav-label">Data Trust Framework</span>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div style="border-bottom: 1px solid var(--border);">
+    <header class="hero">
+      <div class="project-tag">Data Governance</div>
+      <h1>The Data Trust Framework</h1>
+      <p class="tagline">"Data is only as valuable as the trust behind it."</p>
+      <div class="pillar-row">
+        <span class="pillar-chip"><span class="n">1</span> Define</span>
+        <span class="pillar-chip"><span class="n">2</span> Trace</span>
+        <span class="pillar-chip"><span class="n">3</span> Test</span>
+        <span class="pillar-chip"><span class="n">4</span> Contract</span>
+      </div>
+    </header>
+  </div>
+
+  <!-- ── The Problem ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="sec-label">The Problem</div>
+      <h2>Why data breaks trust — and how to fix it</h2>
+      <div class="prose">
+        <p>Every organization has a version of this story. A weekly business review grinds to a halt because Finance and Product are showing different numbers for the same metric. Nobody is lying. The numbers are technically accurate. But they are measuring different things under the same name — and nobody wrote that down.</p>
+        <p>This is not a technology problem. It is a systems problem. When definitions are undocumented, lineage is invisible, quality is assumed, and there is no explicit agreement between who produces data and who consumes it, trust collapses. Quietly, repeatedly, at the worst moments.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>The core premise:</strong> A number is only trustworthy when you can answer four questions about it — Who approved what it means? Where exactly did it come from? Did it pass quality checks before landing here? And who made a formal commitment to deliver it reliably?</p>
+      </div>
+
+      <div class="prose">
+        <p>The Data Trust Framework embeds those four answers directly into the data warehouse as first-class SQL objects — making trust visible, measurable, and auditable without requiring a new platform or a separate tool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── The Four Pillars ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="sec-label">The Framework</div>
+      <h2>Four pillars, one trust score</h2>
+      <div class="prose">
+        <p>Each pillar addresses a specific failure mode that allows bad data to go undetected. Together, they produce a trust score from 0 to 100 for every metric in your warehouse — a single number that tells you exactly how much confidence to place in any data point before it appears in a report or drives a decision.</p>
+      </div>
+
+      <div class="pillar-grid">
+        <div class="pillar-card">
+          <div class="badge">1</div>
+          <div class="eyebrow">Pillar One</div>
+          <div class="name">Define</div>
+          <p>Every metric has a single, approved business definition. No number enters a report until a data owner has signed off on what it means — in plain language and in SQL.</p>
+          <span class="table-ref">metric_registry</span>
+        </div>
+        <div class="pillar-card">
+          <div class="badge">2</div>
+          <div class="eyebrow">Pillar Two</div>
+          <div class="name">Trace</div>
+          <p>Every number connects back to a source system. The transformation logic is documented. Any analyst can walk the full chain from raw event to reported figure.</p>
+          <span class="table-ref">data_lineage</span>
+        </div>
+        <div class="pillar-card">
+          <div class="badge">3</div>
+          <div class="eyebrow">Pillar Three</div>
+          <div class="name">Test</div>
+          <p>Automated quality rules run on every pipeline refresh. Results are logged. A metric that fails its checks is flagged before it is consumed — not silently trusted.</p>
+          <span class="table-ref">quality_rules</span>
+        </div>
+        <div class="pillar-card">
+          <div class="badge">4</div>
+          <div class="eyebrow">Pillar Four</div>
+          <div class="name">Contract</div>
+          <p>Producers and consumers have an explicit, signed agreement on freshness and completeness. SLAs are documented objects, not verbal understandings that fade with headcount.</p>
+          <span class="table-ref">data_contracts</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SQL Schema ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="sec-label">SQL Implementation</div>
+      <h2>The schema</h2>
+      <div class="prose">
+        <p>Five tables, fully runnable on any PostgreSQL-compatible database. Each table maps to one pillar. Copy and run the blocks below in order to stand up the complete framework.</p>
+      </div>
+
+      <!-- Pillar 1 -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">PILLAR 1 · Define — metric_registry</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>-- Every metric must be defined and approved before it can be trusted.
+-- No number enters a report while status = 'draft'.
+CREATE TABLE metric_registry (
+    metric_id     SERIAL       PRIMARY KEY,
+    metric_name   VARCHAR(100) NOT NULL UNIQUE,
+    category      VARCHAR(50),
+    business_def  TEXT         NOT NULL,  -- plain-English, no jargon
+    technical_def TEXT         NOT NULL,  -- exact SQL formula or expression
+    owner_team    VARCHAR(100) NOT NULL,
+    approved_by   VARCHAR(100),           -- NULL = not yet approved
+    approved_at   TIMESTAMP,
+    version       INT          DEFAULT 1,
+    status        VARCHAR(20)  DEFAULT 'draft'
+    -- status: draft | active | deprecated
+);</code></pre>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">PILLAR 2 · Trace — data_lineage</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>-- Documents the full journey from raw source to reported number.
+-- One row per metric per source system.
+CREATE TABLE data_lineage (
+    lineage_id         SERIAL       PRIMARY KEY,
+    metric_id          INT          REFERENCES metric_registry(metric_id),
+    source_system      VARCHAR(100) NOT NULL,   -- e.g. Stripe, Salesforce, dbt
+    source_table       VARCHAR(200) NOT NULL,
+    transformation_sql TEXT,                    -- how raw data becomes the metric
+    pipeline_name      VARCHAR(100),
+    refresh_frequency  VARCHAR(50),             -- realtime | hourly | daily | weekly
+    last_refreshed_at  TIMESTAMP,
+    maintained_by      VARCHAR(100)
+);</code></pre>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">PILLAR 3 · Test — quality_rules &amp; quality_check_log</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>-- Rules that must pass on every refresh before a metric is trusted.
+-- check_sql returns rows if the rule is violated.
+CREATE TABLE quality_rules (
+    rule_id          SERIAL       PRIMARY KEY,
+    metric_id        INT          REFERENCES metric_registry(metric_id),
+    rule_name        VARCHAR(100) NOT NULL,
+    rule_description TEXT         NOT NULL,
+    check_sql        TEXT         NOT NULL,  -- returns rows = violation detected
+    severity         VARCHAR(20)  DEFAULT 'warning'
+    -- severity: critical | warning | info
+);
+
+-- Append-only log of every quality check run by your pipeline.
+CREATE TABLE quality_check_log (
+    log_id       SERIAL    PRIMARY KEY,
+    rule_id      INT       REFERENCES quality_rules(rule_id),
+    checked_at   TIMESTAMP DEFAULT NOW(),
+    rows_failed  INT       DEFAULT 0,   -- 0 = rule passed
+    passed       BOOLEAN,               -- set to (rows_failed = 0) on insert
+    details      TEXT
+);</code></pre>
+      </div>
+
+      <!-- Pillar 4 -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">PILLAR 4 · Contract — data_contracts</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>-- Explicit, signed SLA between the team that produces a metric
+-- and the team that depends on it.
+CREATE TABLE data_contracts (
+    contract_id       SERIAL         PRIMARY KEY,
+    metric_id         INT            REFERENCES metric_registry(metric_id),
+    producer_team     VARCHAR(100)   NOT NULL,
+    consumer_team     VARCHAR(100)   NOT NULL,
+    freshness_sla_hrs INT            NOT NULL,  -- max acceptable hours stale
+    completeness_sla  DECIMAL(5,2)   NOT NULL,  -- min % of non-null values
+    signed_at         TIMESTAMP      DEFAULT NOW(),
+    active            BOOLEAN        DEFAULT TRUE
+);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Sample Dataset ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="sec-label">Sample Dataset</div>
+      <h2>Three metrics, three trust levels</h2>
+      <div class="prose">
+        <p>This sample models three common business metrics at different stages of governance maturity. Run the INSERT statements below into the schema above, then query the trust score view to see the results.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>Scenario:</strong> A SaaS company tracks Monthly Recurring Revenue, Customer Churn Rate, and Daily Active Users. Their data maturity tells a very different story for each one.</p>
+      </div>
+
+      <!-- metric_registry inserts -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">SAMPLE DATA · metric_registry</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>INSERT INTO metric_registry
+  (metric_name, category, business_def, technical_def, owner_team, approved_by, approved_at, status)
+VALUES
+  -- Fully governed. Ready to trust.
+  (
+    'monthly_recurring_revenue',
+    'finance',
+    'Total contracted recurring revenue normalized to a monthly value,
+     excluding one-time charges, discounts, and trial periods.',
+    'SUM(subscription_amount) WHERE billing_cycle = ''monthly''
+     AND status = ''active'' AND trial = FALSE',
+    'Finance',
+    'Head of Finance',
+    '2025-01-15 09:00:00',
+    'active'
+  ),
+  -- Approved and active, but missing a contract.
+  (
+    'customer_churn_rate',
+    'product',
+    'Percentage of customers who cancelled their subscription
+     in a given calendar month, measured at the cohort level.',
+    '(customers_cancelled_in_month / customers_at_month_start) * 100.0',
+    'Product Analytics',
+    'VP of Product',
+    '2025-02-01 11:00:00',
+    'active'
+  ),
+  -- Not yet approved. No lineage, no tests, no contract.
+  (
+    'daily_active_users',
+    'product',
+    'Count of unique users who performed at least one meaningful action
+     in the product on a given calendar day.',
+    'COUNT(DISTINCT user_id) WHERE event_date = CURRENT_DATE
+     AND event_type NOT IN (''ping'', ''heartbeat'')',
+    'Engineering',
+    NULL,          -- not yet approved
+    NULL,
+    'draft'        -- still a draft
+  );</code></pre>
+      </div>
+
+      <!-- data_lineage inserts -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">SAMPLE DATA · data_lineage</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>INSERT INTO data_lineage
+  (metric_id, source_system, source_table, transformation_sql,
+   pipeline_name, refresh_frequency, maintained_by)
+VALUES
+  (
+    1,  -- monthly_recurring_revenue
+    'Stripe',
+    'stripe.subscriptions',
+    'SELECT SUM(plan_amount / 100.0)
+     FROM stripe.subscriptions
+     WHERE status = ''active''
+       AND billing_scheme = ''per_unit''
+       AND trial_end IS NULL',
+    'stripe_mrr_daily',
+    'daily',
+    'Data Engineering'
+  ),
+  (
+    2,  -- customer_churn_rate
+    'Internal CRM',
+    'crm.subscription_events',
+    'SELECT
+       (COUNT(*) FILTER (WHERE event = ''cancelled'') * 100.0)
+       / NULLIF(COUNT(DISTINCT customer_id), 0)
+     FROM crm.subscription_events
+     WHERE event_month = DATE_TRUNC(''month'', NOW())',
+    'churn_rate_daily',
+    'daily',
+    'Data Engineering'
+  );
+-- Note: daily_active_users has no lineage row — Pillar 2 is missing.</code></pre>
+      </div>
+
+      <!-- quality_rules inserts -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">SAMPLE DATA · quality_rules</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>INSERT INTO quality_rules
+  (metric_id, rule_name, rule_description, check_sql, severity)
+VALUES
+  (
+    1,  -- monthly_recurring_revenue
+    'mrr_no_nulls',
+    'MRR must never be NULL for active reporting periods.',
+    'SELECT * FROM finance.mrr_daily
+     WHERE mrr_amount IS NULL
+       AND report_date >= CURRENT_DATE - INTERVAL ''30 days''',
+    'critical'
+  ),
+  (
+    1,  -- monthly_recurring_revenue
+    'mrr_positive_value',
+    'MRR must be a positive number. Zero or negative values indicate a pipeline error.',
+    'SELECT * FROM finance.mrr_daily WHERE mrr_amount <= 0',
+    'critical'
+  ),
+  (
+    2,  -- customer_churn_rate
+    'churn_rate_valid_range',
+    'Churn rate must be between 0% and 100%. Any value outside this range is a data error.',
+    'SELECT * FROM product.churn_monthly
+     WHERE churn_rate < 0 OR churn_rate > 100',
+    'critical'
+  );
+-- Note: daily_active_users has no quality rules — Pillar 3 is missing.</code></pre>
+      </div>
+
+      <!-- data_contracts inserts -->
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">SAMPLE DATA · data_contracts</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>INSERT INTO data_contracts
+  (metric_id, producer_team, consumer_team,
+   freshness_sla_hrs, completeness_sla, signed_at)
+VALUES
+  (
+    1,  -- monthly_recurring_revenue
+    'Finance',
+    'Executive Team',
+    24,    -- must refresh within 24 hours
+    99.9,  -- 99.9% of rows must be non-null
+    '2025-01-20 10:00:00'
+  );
+-- Note: customer_churn_rate and daily_active_users have no contracts — Pillar 4 is missing.</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust Score ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="sec-label">Trust Score</div>
+      <h2>Querying confidence</h2>
+      <div class="prose">
+        <p>The trust score view aggregates all four pillars into a single 0–100 score per metric. Each pillar is worth 25 points. Run this against your populated schema to see exactly which metrics can be trusted — and which ones still need work before they drive a decision.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">VIEW · metric_trust_scores</span>
+          <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        </div>
+        <pre class="language-sql"><code>CREATE VIEW metric_trust_scores AS
+SELECT
+    mr.metric_name,
+    mr.category,
+    mr.owner_team,
+    mr.status,
+
+    -- Pillar 1: Definition approved and active?
+    CASE WHEN mr.approved_by IS NOT NULL AND mr.status = 'active'
+         THEN 'yes' ELSE 'no' END                   AS defined,
+
+    -- Pillar 2: Lineage documented?
+    CASE WHEN dl.lineage_id IS NOT NULL
+         THEN 'yes' ELSE 'no' END                   AS traced,
+
+    -- Pillar 3: Quality rules exist?
+    CASE WHEN COALESCE(qr.rule_count, 0) > 0
+         THEN 'yes' ELSE 'no' END                   AS tested,
+
+    -- Pillar 4: Active contract in place?
+    CASE WHEN dc.contract_id IS NOT NULL
+         THEN 'yes' ELSE 'no' END                   AS contracted,
+
+    -- Trust score: 25 points per pillar (max 100)
+    (
+        CASE WHEN mr.approved_by IS NOT NULL
+                  AND mr.status = 'active'           THEN 25 ELSE 0 END
+      + CASE WHEN dl.lineage_id IS NOT NULL          THEN 25 ELSE 0 END
+      + CASE WHEN COALESCE(qr.rule_count, 0) > 0    THEN 25 ELSE 0 END
+      + CASE WHEN dc.contract_id IS NOT NULL         THEN 25 ELSE 0 END
+    )                                                AS trust_score
+
+FROM metric_registry mr
+LEFT JOIN data_lineage dl
+    ON mr.metric_id = dl.metric_id
+LEFT JOIN (
+    SELECT metric_id, COUNT(*) AS rule_count
+    FROM quality_rules
+    GROUP BY metric_id
+) qr ON mr.metric_id = qr.metric_id
+LEFT JOIN data_contracts dc
+    ON mr.metric_id = dc.metric_id AND dc.active = TRUE;
+
+
+-- Run it:
+SELECT * FROM metric_trust_scores ORDER BY trust_score DESC;</code></pre>
+      </div>
+
+      <div class="prose" style="margin-top: 1.25rem;">
+        <p>Against the sample dataset, the query returns:</p>
+      </div>
+
+      <!-- Results table -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Defined</th>
+              <th>Traced</th>
+              <th>Tested</th>
+              <th>Contracted</th>
+              <th>Trust Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>monthly_recurring_revenue</code></td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td>
+                <div class="score-cell">
+                  <span style="color: #6B7F5E;">100</span>
+                  <div class="bar-wrap">
+                    <div class="bar">
+                      <div class="bar-fill" style="width:100%; background:#6B7F5E;"></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><code>customer_churn_rate</code></td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
+              <td>
+                <div class="score-cell">
+                  <span style="color: #B8A02A;">75</span>
+                  <div class="bar-wrap">
+                    <div class="bar">
+                      <div class="bar-fill" style="width:75%; background:#B8A02A;"></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><code>daily_active_users</code></td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td>
+                <div class="score-cell">
+                  <span style="color: #c0796b;">0</span>
+                  <div class="bar-wrap">
+                    <div class="bar">
+                      <div class="bar-fill" style="width:2%; background:#c0796b;"></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout" style="margin-top: 1.5rem;">
+        <p>A score of 75 on churn rate does not mean the data is wrong — it means there is no formal commitment from a producing team to deliver it reliably. The framework turns that gap from an unknown risk into a visible, actionable task. The score is a statement of accountability, not a verdict.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Extending the Framework ── -->
+  <section class="section" style="border-bottom: none;">
+    <div class="inner">
+      <div class="sec-label">Extending the Framework</div>
+      <h2>Where this goes next</h2>
+      <div class="prose">
+        <p>The core schema is intentionally minimal — five tables, one view. In practice it scales in three directions without any structural changes.</p>
+      </div>
+
+      <div class="ext-grid">
+        <div class="ext-card">
+          <div class="ext-title">Automate quality runs</div>
+          <p>Wire <code>quality_check_log</code> into your dbt test suite, Airflow DAG, or GitHub Actions pipeline. Every refresh writes a row. Dashboards reflect real-time pass/fail status without a separate observability tool.</p>
+        </div>
+        <div class="ext-card">
+          <div class="ext-title">Alert on score drops</div>
+          <p>Schedule a query that sends a page when any metric's <code>trust_score</code> falls below a threshold. A metric that was trusted yesterday and isn't today is a signal — not background noise.</p>
+        </div>
+        <div class="ext-card">
+          <div class="ext-title">Publish the registry</div>
+          <p>Export <code>metric_registry</code> to any data catalog — Notion, Confluence, or a static site. Making definitions searchable is a forcing function for keeping them current and debated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <a href="../">← Back to Projects</a>
+    <p class="credit">Geoffrey Rugarabamu · Data Governance &amp; Analytics · rugarabamu.me</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
+  <script>
+    function copyBlock(btn) {
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = original; }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
